@@ -10,9 +10,16 @@ import Vuex from 'vuex'
 //import NProgress from 'nprogress'
 //import 'nprogress/nprogress.css'
 import routes from './routes'
-import Mock from './mock'
-Mock.bootstrap();
+
+//卸载mock
+// import Mock from './mock'
+// Mock.bootstrap();
 import 'font-awesome/css/font-awesome.min.css'
+
+//全局配置axios
+import axios from 'axios'
+axios.defaults.baseURL = "http://localhost:8991/services"//配置网关
+Vue.prototype.$http = axios
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
@@ -26,10 +33,13 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   //NProgress.start();
+    //如果将要跳转的是登录页面，将session中存储的user信息删除掉
   if (to.path == '/login') {
     sessionStorage.removeItem('user');
   }
+  //从session中获取user信息
   let user = JSON.parse(sessionStorage.getItem('user'));
+  //！user 没有user没有登录过
   if (!user && to.path != '/login') {
     next({ path: '/login' })
   } else {

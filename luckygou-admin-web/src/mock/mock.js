@@ -22,10 +22,13 @@ export default {
 
     //登录
     mock.onPost('/login').reply(config => {
+      //从请求中获取用户名和密码
       let {username, password} = JSON.parse(config.data);
+      //模拟一个异步
       return new Promise((resolve, reject) => {
         let user = null;
         setTimeout(() => {
+          //es6数组的some方法，有一个满足则返回true
           let hasUser = LoginUsers.some(u => {
             if (u.username === username && u.password === password) {
               user = JSON.parse(JSON.stringify(u));
