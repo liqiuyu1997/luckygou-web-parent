@@ -29,7 +29,7 @@
             </el-table-column>
             <el-table-column prop="logo" label="商品logo" width="120" sortable align="center">
                 <template scope="scope">
-                    <img src="scope.row.logo" style="margin-top: 10px;height: 30px">
+                    <img :src="'http://172.16.4.84'+scope.row.logo" style="margin-top: 10px;height: 30px">
                 </template>
             </el-table-column>
             <el-table-column prop="productType.name" label="商品类型" width="150" sortable align="center">
@@ -62,7 +62,19 @@
                 </el-form-item>
 
                 <el-form-item label="品牌logo" prop="logo">
-                    <el-input v-model="editForm.logo"></el-input>
+                    <template>
+                        <el-upload
+                                class="upload-demo"
+                                action="http://127.0.0.1:8991/services/common/file"
+                                list-type="picture"
+                                :on-success="handleSuccess"
+                                :before-upload="handleBeforeUpload"
+                                :file-list="fileList"
+                                :on-remove="removeone"
+                        >
+                            <el-button size="small" type="primary">点击上传</el-button>
+                        </el-upload>
+                    </template>
                 </el-form-item>
 
                 <div class="block" style="margin-left: 15px">
@@ -98,7 +110,20 @@
                     <el-input v-model="addForm.englishName"></el-input>
                 </el-form-item>
                 <el-form-item label="品牌logo" prop="logo">
-                    <el-input v-model="addForm.logo"></el-input>
+                    <!--<el-input v-model="addForm.logo"></el-input>-->
+                    <template>
+                        <el-upload
+                                class="upload-demo"
+                                action="http://127.0.0.1:8991/services/common/file"
+                                list-type="picture"
+                                :on-success="handleSuccess"
+                                :before-upload="handleBeforeUpload"
+                                :file-list="fileList"
+                                :on-remove="removeone"
+                        >
+                            <el-button size="small" type="primary">点击上传</el-button>
+                        </el-upload>
+                    </template>
                 </el-form-item>
                 <div class="block" style="margin-left: 15px">
                     <span class="demonstration">商品类型</span>
@@ -135,6 +160,8 @@
     export default {
         data() {
             return {
+                //以上传文件
+                fileList:[],//用作回显
                 filters: {
                     keyword: ''
                 },
@@ -191,6 +218,61 @@
             }
         },
         methods: {
+            //删除文件
+            removeone(file,fileList){
+                let file = '';
+                if(file.size){
+                    file =file.response.restObj;
+                }else{
+                    file =file.url.slice(19);
+                }
+                this.$http.delete("/common/file?file="+file)
+                    .then(res=>{
+                        if(res.data.success){
+                            this.$message({
+                                message: '删除logo成功!',
+                                type: 'success'
+                            });
+                            this.fileList=[];
+                        }else{
+                            this.$message({
+                                message: '删除删除logo成功失败!',
+                                type: 'error'
+                            });
+                            this.fileList=[];
+                        }
+                    })
+            },
+            //文件上传之前对上传文件个数做限制
+            handleBeforeUpload(file){
+                //看fileList中的元素个数
+                //console.log("this.fileList",this.fileList);
+                if(this.fileList.length>0){
+                    this.$message({
+                        message: '只能上传一张logo图片',
+                        type: 'warning'
+                    });
+                    return false;//停止上传
+                }
+
+            },
+            //文件上传成功后的钩子函数
+            handleSuccess(response, file, fileList){
+                let {success,message,restObj} = response;
+                if(success){
+                    this.addForm.logo = restObj;
+                    this.$message({
+                        message: '上传成功',
+                        type: 'success'
+                    });
+                }else{
+                    this.$message({
+                        message: message,
+                        type: 'error'
+                    });
+                }
+                this.fileList = fileList;
+            },
             //性别显示转换
             formatSex: function (row, column) {
                 return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
@@ -285,13 +367,16 @@
 
             //显示编辑界面
             handleEdit: function (index, row) {
+                this.fileList = [];
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
+                this.fileList.push({"url":"http://172.16.4.84" + row.logo});
                 this.loadGetPath(index, row)
 
             },
             //显示新增界面
             handleAdd: function () {
+                this.fileList = [];
                 this.addFormVisible = true;
                 this.addForm = {
                     name: '',
