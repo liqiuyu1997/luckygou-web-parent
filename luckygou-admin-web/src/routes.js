@@ -11,6 +11,7 @@ import Page6 from './views/nav3/Page6.vue'
 import echarts from './views/charts/echarts.vue'
 import Brand from './views/product/Brand.vue'
 import productType from './views/product/productType.vue'
+import Product from './views/product/Product.vue'
 
 let routes = [
     {
@@ -45,7 +46,7 @@ let routes = [
             { path: '/brand', component: Brand, name: '品牌管理'},
             { path: '/productType', component: productType, name: '类型管理' },
             { path: '/specification', component: Form, name: '属性管理' },
-            { path: '/product', component: user, name: '商品管理' },
+            { path: '/product', component: Product, name: '商品管理' },
         ]
     },
     {

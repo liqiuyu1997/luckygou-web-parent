@@ -220,26 +220,20 @@
         methods: {
             //删除文件
             removeone(file,fileList){
-                let file = '';
+                let fileId = '';
                 if(file.size){
-                    file =file.response.restObj;
+                    fileId =file.response.restObj;
                 }else{
-                    file =file.url.slice(19);
+                    fileId =file.url.slice(19);
                 }
-                this.$http.delete("/common/file?file="+file)
+                this.fileList = [];
+                this.$http.delete("/common/file?fileId="+fileId)
                     .then(res=>{
                         if(res.data.success){
                             this.$message({
-                                message: '删除logo成功!',
+                                message: '删除成功!',
                                 type: 'success'
                             });
-                            this.fileList=[];
-                        }else{
-                            this.$message({
-                                message: '删除删除logo成功失败!',
-                                type: 'error'
-                            });
-                            this.fileList=[];
                         }
                     })
             },
@@ -367,11 +361,14 @@
 
             //显示编辑界面
             handleEdit: function (index, row) {
-                this.fileList = [];
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
+                this.fileList = [];
                 this.fileList.push({"url":"http://172.16.4.84" + row.logo});
                 this.loadGetPath(index, row)
+
+            },
+            handleChange(){
 
             },
             //显示新增界面
