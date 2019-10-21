@@ -508,9 +508,60 @@
                 });
             },
             //上架
-            handleOnSale(){},
+            handleOnSale(){
+                var ids = this.sels.map(item => item.id).toString();
+                this.$confirm('确认上架选中商品吗？', '提示', {
+                    type: 'warning'
+                }).then(() => {
+                    this.listLoading = true;
+                    this.$http.get("/product/product/onSale?ids="+ids)
+                        .then(res=>{
+                            this.listLoading = false;
+                            let {success,message,restObj} = res.data;
+                            if (success){
+                                this.$message({
+                                    message: '上架成功',
+                                    type: 'success'
+                                });
+                                this.getProducts();
+                            }else {
+                                this.$message({
+                                    message: message,
+                                    type: 'error'
+                                });
+                            }
+                        })
+                }).catch(() => {
+                });
+
+			},
             //下架
-            handleOffSale(){},
+            handleOffSale(){
+                var ids = this.sels.map(item => item.id).toString();
+                this.$confirm('确认下架选中商品吗？', '提示', {
+                    type: 'warning'
+                }).then(() => {
+                    this.listLoading = true;
+                    this.$http.get("/product/product/offSale?ids="+ids)
+                        .then(res=>{
+                            this.listLoading = false;
+                            let {success,message,restObj} = res.data;
+                            if (success){
+                                this.$message({
+                                    message: '下架成功',
+                                    type: 'success'
+                                });
+                                this.getProducts();
+                            }else {
+                                this.$message({
+                                    message: message,
+                                    type: 'error'
+                                });
+                            }
+                        })
+                }).catch(() => {
+                });
+			},
             //格式化时间
             formatOnSaleTime(row, column){
                 return this.formatTime(row.onSaleTime)
