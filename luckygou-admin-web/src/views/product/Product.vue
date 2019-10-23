@@ -861,6 +861,14 @@
                     },[{}])
 
                     this.skus = result;
+                    //查询价格
+					this.$http.get("/product/sku/getPrices/" + this.sels[0].id).then(res=>{
+					    let s = res.data;
+					    for(let i = 0;i<s.length;i++){
+					        this.skus[i].price = s[i].price;
+					        this.skus[i].store = s[i].availableStock;
+						}
+					})
                 },
                 deep:true
             }
