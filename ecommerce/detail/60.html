@@ -1,0 +1,3022 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<title>爱购网 - 购我所爱 I LOVE BUY</title>
+
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+		<!-- 网站头像 -->
+		<link type="text/css" rel="stylesheet" href="../css/iconfont.css">
+		<link type="text/css" rel="stylesheet" href="../css/common.css">
+		<!--整站改色 _start-->
+		<link type="text/css" rel="stylesheet" href="../css/color-style.css">
+		<!--整站改色 _end-->
+		<link rel="stylesheet" href="../css/layer.css" id="layuicss-skinlayercss">
+		<script type="text/javascript" src="../js/jquery.js"></script>
+		<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../js/layer.js"></script>
+		<script type="text/javascript" src="../js/jquery.method.js"></script>
+		<script type="text/javascript" src="../js/jquery.modal.js"></script>
+		<script type="text/javascript" src="../js/common.js"></script>
+		<!-- 图片缓载js -->
+		<script type="text/javascript" src="../js/jquery.lazyload.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				// 搜索框提示显示
+				$('.SZY-SEARCH-BOX .SZY-SEARCH-BOX-KEYWORD').focus(function() {
+					$(".SZY-SEARCH-BOX .SZY-SEARCH-BOX-HELPER").show();
+				});
+				// 搜索框提示隐藏
+				$(".SZY-SEARCH-BOX-HELPER .close").on('click', function() {
+					$(".SZY-SEARCH-BOX .SZY-SEARCH-BOX-HELPER").hide();
+				});
+				// 清除记录
+				$(".SZY-SEARCH-BOX-HELPER .clear").click(function() {
+					var url = '/search/clear-record.html';
+					$.post(url, {}, function(result) {
+						if(result.code == 0) {
+							$(".history-results .active").empty();
+						} else {}
+					}, 'json');
+				});
+
+				$(".SZY-SEARCH-BOX-TOP .SZY-SEARCH-BOX-SUBMIT-TOP").click(function() {
+					if($(".search-li-top.curr").attr('num') == 0) {
+						var keyword_obj = $(this).parents(".SZY-SEARCH-BOX-TOP").find(".SZY-SEARCH-BOX-KEYWORD");
+
+						var keywords = $(keyword_obj).val();
+						if($.trim(keywords).length == 0 || $.trim(keywords) == "请输入关键词") {
+							keywords = $(keyword_obj).data("searchwords");
+						}
+						$(keyword_obj).val(keywords);
+					}
+					$(this).parents(".SZY-SEARCH-BOX-TOP").find(".SZY-SEARCH-BOX-FORM").submit();
+				});
+
+				$(".SZY-SEARCH-BOX .SZY-SEARCH-BOX-SUBMIT").click(function() {
+					if($(".search-li.curr").attr('num') == 0) {
+						var keyword_obj = $(this).parents(".SZY-SEARCH-BOX").find(".SZY-SEARCH-BOX-KEYWORD");
+
+						var keywords = $(keyword_obj).val();
+						if($.trim(keywords).length == 0 || $.trim(keywords) == "请输入关键词") {
+							keywords = $(keyword_obj).data("searchwords");
+						}
+						$(keyword_obj).val(keywords);
+					}
+					$(this).parents(".SZY-SEARCH-BOX").find(".SZY-SEARCH-BOX-FORM").submit();
+				});
+			});
+
+			function search_box_remove(key) {
+				var url = '/search/delete-record.html';
+				$.post(url, {
+					data: key
+				}, function(result) {
+					if(result.code == 0) {
+						$("#" + key).css("display", "none");
+					} else {
+
+					}
+				}, 'json');
+			}
+			$(document).on("click", function(e) {
+				var target = $(e.target);
+				if(target.closest(".SZY-SEARCH-BOX").length == 0) {
+					$('.SZY-SEARCH-BOX-HELPER').hide();
+				}
+			});
+		</script>
+		<script type="text/javascript" src="../js/vue/vue.js"></script>
+		<script type="text/javascript" src="../js/vue/axios.js"></script>
+	</head>
+
+	<body class="pace-done">
+		<div id="app">
+		<!-- 站点选择 -->
+		<div class="header-top">
+			<div class="header-box">
+
+				<!-- 站点 -->
+				<!--站点 start-->
+				<div class="SZY-SUBSITE">
+
+				</div>
+				<!--站点 end-->
+				<font id="login-info" class="login-info SZY-USER-NOT-LOGIN">
+					<a class="login color" href="login.html" target="_top">请登录</a>
+					<a class="register" href="register.html" target="_top">免费注册</a>
+				</font>
+				<font id="login-info" class="login-info SZY-USER-ALREADY-LOGIN" style="display: none;">
+					<em>
+		<a href="user.html" target="_blank" class="color SZY-USER-NAME"></a>
+		<!--欢迎您回来!-->
+	</em>
+					<a href="site/logout" data-method="post">退出</a>
+				</font>
+
+				<ul>
+					<li>
+						<a class="menu-hd home" href="" target="_top">
+							<i></i> 爱购首页
+						</a>
+					</li>
+					<li class="menu-item">
+						<div class="menu">
+							<a class="menu-hd myinfo" href="user.html" target="_blank">
+								<i></i> 会员中心
+								<b></b>
+							</a>
+							<div id="menu-2" class="menu-bd" style="display: none;">
+								<span class="menu-bd-mask"></span>
+								<div class="menu-bd-panel">
+									<a href="user/order.html" target="_blank">我的宝贝</a>
+									<a href="user/address.html" target="_blank">我的地址</a>
+									<a href="user/collect/goods.html" target="_blank">我的收藏</a>
+									<a href="user/collect/shop.html" target="_blank">关注店铺</a>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="menu-item cartbox">
+						<div class="menu">
+							<a class="menu-hd cart" href="../cart.html" target="_top">
+								<i></i> 购物车
+								<span class="SZY-CART-COUNT">0</span>
+								<b></b>
+							</a>
+							<div id="menu-4" class="menu-bd cart-box-main">
+								<span class="menu-bd-mask"></span>
+								<div class="dropdown-layer">
+									<div class="spacer"></div>
+									<div class="dropdown-layer-con cartbox-goods-list">
+
+										<!-- 正在加载 -->
+										<div class="cart-type">
+											<i class="cart-type-icon"></i>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</li>
+
+					<li class="menu-item">
+						<div class="menu">
+							<a class="menu-hd we-chat" href="" target="_top">
+								<i></i> 关注爱购
+								<b></b>
+							</a>
+							<div id="menu-5" class="menu-bd we-chat-qrcode">
+								<span class="menu-bd-mask"></span>
+								<a target="_top">
+									<img src="../img/test/mall_wx_qrcode_0.jpg" alt="官方微信">
+								</a>
+								<p class="font-14">关注官方微信</p>
+							</div>
+						</div>
+					</li>
+
+					<li class="menu-item">
+						<div class="menu">
+							<a href="" class="menu-hd site-nav" target="_blank">
+								更多支持
+								<b></b>
+							</a>
+							<div id="menu-7" class="menu-bd site-nav-main">
+								<span class="menu-bd-mask"></span>
+								<div class="menu-bd-panel">
+									<div class="site-nav-con">
+
+										<a href="article/info?id=38" target="_blank" title="新手上路">新手上路</a>
+
+										<a href="article/info?id=38" target="_blank" title="支付方式">支付方式</a>
+
+										<a href="article/list/3.html" target="_blank" title="配送服务">配送服务</a>
+
+										<a href="article/list/4.html" target="_blank" title="售后服务">售后服务</a>
+
+										<a href="article/info?id=38" target="_blank" title="商家合作">商家合作</a>
+
+										<a href="../list.html?cat_id=17" target="_blank" title="店铺街">店铺街</a>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+
+		<div class="header">
+			<div class="w1210">
+				<div class="logo-info">
+					<a href="/" class="logo">
+						<img src="../img/test/mall_logo_0.png">
+					</a>
+
+					<!-- logo右侧小广告 _start -->
+					<a href="#" class="logo-right">
+						<img src="../img/test/mall_logo_right_ad_image_0.png">
+					</a>
+					<!-- logo右侧小广告 _end -->
+
+				</div>
+				<div class="search SZY-SEARCH-BOX">
+					<form class="search-form SZY-SEARCH-BOX-FORM" method="get" action="search.html">
+						<div class="search-info">
+							<div class="search-type-box">
+								<ul class="search-type">
+									<li class="search-li curr" num="0">商品</li>
+									<li class="search-li" num="1">店铺</li>
+								</ul>
+								<i></i>
+							</div>
+							<div class="search-box">
+								<div class="search-box-con">
+									<input type="text" class="keyword search-box-input SZY-SEARCH-BOX-KEYWORD" name="keyword" tabindex="9" autocomplete="off" data-searchwords="特价商品" placeholder="搜索特价商品" value="">
+								</div>
+							</div>
+							<input type="hidden" id="searchtype" name="type" value="0" class="searchtype">
+							<button id="btn_search_box_submit" class="button bg-color btn_search_box_submit SZY-SEARCH-BOX-SUBMIT"></button>
+						</div>
+						<!---热门搜索热搜词显示--->
+
+						<div class="search-results hide SZY-SEARCH-BOX-HELPER">
+							<ul class="history-results">
+								<li class="title">
+									<span>最近搜索</span>
+									<a href="javascript:void(0);" class="clear-history clear">
+										<i></i> 清空
+									</a>
+								</li>
+								<!---->
+							</ul>
+							<ul class="rec-results">
+								<li class="title">
+									<span>正在热搜中</span>
+									<i class="close"></i>
+								</li>
+
+								<li>
+									<a target="_blank" href="#">毛呢大衣</a>
+								</li>
+
+								<li>
+									<a target="_blank" href="#">9.9包邮</a>
+								</li>
+
+								<li>
+									<a target="_blank" href="#">iphone</a>
+								</li>
+
+								<li>
+									<a target="_blank" href="#">特价</a>
+								</li>
+
+								<li>
+									<a target="_blank" href="#">充电宝</a>
+								</li>
+
+							</ul>
+						</div>
+					</form>
+					<ul class="hot-query">
+						<!-- 默认搜索词 -->
+
+						<li class="first">
+							<a href="#">牛仔裤</a>
+						</li>
+
+						<li>
+							<a href="#">POLO衫</a>
+						</li>
+
+						<li>
+							<a href="#">单鞋</a>
+						</li>
+
+						<li>
+							<a href="#">ThinkPAD</a>
+						</li>
+
+						<li>
+							<a href="#">小米6</a>
+						</li>
+
+						<li>
+							<a href="#">华为MATE9</a>
+						</li>
+
+						<li>
+							<a href="#">你懂得</a>
+						</li>
+
+						<li>
+							<a href="#">你懂得</a>
+						</li>
+
+					</ul>
+				</div>
+
+				<!-- 搜索框右侧小广告 _start -->
+
+				<div class="header-right">
+					<a href="#" title="">
+						<img src="../img/test/mall_search_right_ad_image_0.png">
+					</a>
+				</div>
+
+				<!-- 搜索框右侧小广告 _end -->
+
+			</div>
+		</div>
+
+		<!-- 站点导航 -->
+		<!-- 判断url链接 -->
+		<div class="category-box category-box-border">
+			<div class="w1210">
+				<div class="home-category fl">
+					<a href="http://www.itsource.cn/category.html" class="menu-event" title="查看全部商品分类">
+						<i></i> 全部商品分类
+					</a>
+					<div class="expand-menu category-layer">
+						<span class="category-layer-bg bg-color"></span>
+					</div>
+				</div>
+
+				<div class="all-category fl" id="nav">
+					<ul>
+
+						<li class="fl">
+							<a class="nav current" href="/" target="_blank" title="首页">首页</a>
+							<!-- 导航小标签 _start -->
+
+							<!-- 导航小标签 _end -->
+						</li>
+
+						<li class="fl">
+							<a class="nav " href="#" target="_blank" title="爱购团">爱购团</a>
+							<!-- 导航小标签 _start -->
+
+							<!-- 导航小标签 _end -->
+						</li>
+
+						<li class="fl">
+							<a class="nav " href="#" target="_blank" title="海外购">海外购</a>
+							<!-- 导航小标签 _start -->
+
+							<!-- 导航小标签 _end -->
+						</li>
+
+						<li class="fl">
+							<a class="nav " href="#" target="_blank" title="品牌馆">品牌馆</a>
+							<!-- 导航小标签 _start -->
+
+							<span class="nav-icon">
+						<img src="../img/test/14766722355540.gif">
+					</span>
+
+							<!-- 导航小标签 _end -->
+						</li>
+
+						<li class="fl">
+							<a class="nav " href="#" target="_blank" title="美妆馆">美妆馆</a>
+							<!-- 导航小标签 _start -->
+
+							<!-- 导航小标签 _end -->
+						</li>
+
+						<li class="fr">
+							<a class="nav " href="#" target="_blank" title="帮助中心">帮助中心</a>
+							<!-- 导航小标签 _start -->
+
+							<!-- 导航小标签 _end -->
+						</li>
+
+						<li class="fr">
+							<a class="nav " href="#" target="_blank" title="商家合作">商家合作</a>
+							<!-- 导航小标签 _start -->
+
+							<span class="nav-icon">
+						<img src="../img/test/14766722553394.gif">
+					</span>
+
+							<!-- 导航小标签 _end -->
+						</li>
+
+						<li class="fl">
+							<a class="nav " href="#" target="_blank" title="一折限量专区">抢购专区</a>
+							<!-- 导航小标签 _start -->
+
+							<span class="nav-icon">
+						<img src="../img/test/14794053929710.gif">
+					</span>
+
+							<!-- 导航小标签 _end -->
+						</li>
+
+					</ul>
+					<div class="wrap-line" style="left: 0px; width: 72px;">
+						<span style="left: 15px;"></span>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- 开始：主要区域内容 -->
+		<!-- css -->
+		<link type="text/css" rel="stylesheet" href="../css/goods.css">
+		<!-- 地区选择器 -->
+		<script type="text/javascript" src="../js/jquery.region.js"></script>
+		<script type="text/javascript" src="../js/jquery.widget.js"></script>
+		<script type="text/javascript" src="../js/jquery.history.js"></script>
+		<div class="w1210">
+
+			<div class="breadcrumb clearfix">
+				<a href="http://www.itsource.cn/" class="index">首页</a>
+
+				<span class="crumbs-arrow">&gt;</span>
+
+									<div class="crumbs-nav crumbs-nav0">
+						<a class="crumbs-title" href="http://www.itsource.cn/list.html?cat_id=27">
+							特产 / 食品 / 大大保健
+							<i class="icon"></i>
+						</a>
+						<div class="crumbs-drop">
+							<ul class="crumbs-drop-list">
+
+								<li>
+									<a href="http://www.itsource.cn/list-1925.html">一折限量区</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1.html">特价商品类</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-36.html">化妆护理宠物化妆/护理/清洁/宠物</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-37.html">鞋包珠宝类</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-295.html">潮流尖货类</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1050.html">母婴/玩具乐器</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1053.html">食品/酒类/生鲜/特产</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1054.html">医药保健</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-299.html">宅男宅女区</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1407.html">图书/影像/电子书</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1408.html">彩票/旅行/票务/充值</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1409.html">理财/众筹/白条/保险</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-436.html">家用电器</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-437.html">手机/运营商/数码</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-438.html">电脑办公</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-720.html">家居/家具/家装/厨具</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-721.html">运动/户外/钟表</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-722.html">汽车/汽车用品</a>
+								</li>
+
+							</ul>
+						</div>
+					</div>
+
+					<span class="crumbs-arrow">&gt;</span>
+									<div class="crumbs-nav crumbs-nav0">
+						<a class="crumbs-title" href="http://www.itsource.cn/list.html?cat_id=27">
+							地方特产
+							<i class="icon"></i>
+						</a>
+						<div class="crumbs-drop">
+							<ul class="crumbs-drop-list">
+
+								<li>
+									<a href="http://www.itsource.cn/list-1925.html">一折限量区</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1.html">特价商品类</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-36.html">化妆护理宠物化妆/护理/清洁/宠物</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-37.html">鞋包珠宝类</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-295.html">潮流尖货类</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1050.html">母婴/玩具乐器</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1053.html">食品/酒类/生鲜/特产</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1054.html">医药保健</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-299.html">宅男宅女区</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1407.html">图书/影像/电子书</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1408.html">彩票/旅行/票务/充值</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1409.html">理财/众筹/白条/保险</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-436.html">家用电器</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-437.html">手机/运营商/数码</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-438.html">电脑办公</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-720.html">家居/家具/家装/厨具</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-721.html">运动/户外/钟表</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-722.html">汽车/汽车用品</a>
+								</li>
+
+							</ul>
+						</div>
+					</div>
+
+					<span class="crumbs-arrow">&gt;</span>
+									<div class="crumbs-nav crumbs-nav0">
+						<a class="crumbs-title" href="http://www.itsource.cn/list.html?cat_id=27">
+							北京
+							<i class="icon"></i>
+						</a>
+						<div class="crumbs-drop">
+							<ul class="crumbs-drop-list">
+
+								<li>
+									<a href="http://www.itsource.cn/list-1925.html">一折限量区</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1.html">特价商品类</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-36.html">化妆护理宠物化妆/护理/清洁/宠物</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-37.html">鞋包珠宝类</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-295.html">潮流尖货类</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1050.html">母婴/玩具乐器</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1053.html">食品/酒类/生鲜/特产</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1054.html">医药保健</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-299.html">宅男宅女区</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1407.html">图书/影像/电子书</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1408.html">彩票/旅行/票务/充值</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-1409.html">理财/众筹/白条/保险</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-436.html">家用电器</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-437.html">手机/运营商/数码</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-438.html">电脑办公</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-720.html">家居/家具/家装/厨具</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-721.html">运动/户外/钟表</a>
+								</li>
+
+								<li>
+									<a href="http://www.itsource.cn/list-722.html">汽车/汽车用品</a>
+								</li>
+
+							</ul>
+						</div>
+					</div>
+
+					<span class="crumbs-arrow">&gt;</span>
+				
+
+				<span class="last">越南新娘</span>
+
+			</div>
+			<!-- 商品详细信息 -->
+			<div class="goods-info">
+				<!-- 商品图片以及相册 _star-->
+				<div id="preview" class="preview">
+					<!-- 商品相册容器 -->
+			<div class="goodsgallery"></div>
+			<script id="SZY_SKU_IMAGES" type="text">
+				[["http://172.16.4.207/group1/M00/00/02/rBAEz12mTHGAI6KTAAC71-hn_JA618.jpg","http://172.16.4.207/group1/M00/00/02/rBAEz12mTHGAI6KTAAC71-hn_JA618.jpg","http://172.16.4.207/group1/M00/00/02/rBAEz12mTHGAI6KTAAC71-hn_JA618.jpg"]]
+			</script>
+			<script type="text/javascript">
+				// 图片相册
+				$(".goodsgallery").goodsgallery({
+					images: $.parseJSON($("#SZY_SKU_IMAGES").html())
+				});
+			</script>
+			<!--相册 END-->
+
+					<div class="goods-gallery-bottom">
+						<a href="javascript:void(0);" class="goods-compare compare-btn fr add-compare " data-goods-id="429" data-sku-id="6163" data-image-url="http://68products.oss-cn-beijing.aliyuncs.com/taobao-yun-images/41458920633/TB2K2cAaICO.eBjSZFzXXaRiVXa_!!1739732836.jpg?x-oss-process=image/resize,m_pad,limit_0,h_320,w_320">
+							<i></i> 对比
+						</a>
+
+						<a href="javascript:void(0);" class="goods-col fr collect-goods" data-goods-id="429">
+							<i></i>
+							<span>收藏商品 (0人气)</span>
+						</a>
+
+						<div class="bdsharebuttonbox fr bdshare-button-style0-16" data-bd-bind="XXXXXXXXX">
+							<a class="bds_more" href="http://www.itsource.cn/6043.html#" data-cmd="more" style="background: none; color: #999; line-height: 25px; height: 25px; margin: 0px 10px; padding-left: 20px; display: block;">
+								<i style="width: 13px; height: 13px; background: transparent url(../css/goods-icon.png) no-repeat -113px -65px; vertical-align: middle; display: inline-block;"></i> 分享
+							</a>
+						</div>
+					</div>
+
+					<script type="text/javascript">
+						window._bd_share_config = {
+							"common": {
+								"bdSnsKey": {},
+								"bdText": "感觉不错，分享一下~",
+								"bdMini": "2",
+								"bdMiniList": false,
+								"bdPic": "http://68products.oss-cn-beijing.aliyuncs.com/taobao-yun-images/41458920633/TB2K2cAaICO.eBjSZFzXXaRiVXa_!!1739732836.jpg?x-oss-process=image/resize,m_pad,limit_0,h_320,w_320",
+								"bdStyle": "0",
+								"bdSize": "16"
+							},
+							"share": {}
+						};
+						with(document) {
+							0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = '//bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+						}
+					</script>
+				</div>
+				<!-- 商品图片以及相册 _end-->
+				<!-- 商品详细信息 _star-->
+				<div class="detail-info">
+					<form action="http://www.itsource.cn/6043.html" method="post" name="" id="">
+
+						<!-- 商品名称 -->
+						<h1 class="goods-name SZY-GOODS-NAME">越南新娘plus</h1>
+						<!-- 商品简单描述 -->
+						<p class="goods-brief second-color"></p>
+						<!-- 商品团购倒计时 -->
+
+						<div class="goods-price">
+							<!-- 商品不同的价格 -->
+							<div class="show-price">
+								<span class="price">市场价</span>
+								<font class="market-price SZY-MARKET-PRICE">￥{{price}}</font>
+							</div>
+							<!-- 红包 -->
+
+							<div class="realy-price">
+
+								<div class="now-prices">
+									<span class="price">售&nbsp;&nbsp;&nbsp;价</span>
+									<strong class="p-price second-color SZY-GOODS-PRICE">￥{{price}}</strong>
+								</div>
+
+								<!-- 
+						<div class="depreciate">
+							<a href="" title="">（降价通知）</a>
+						</div>
+						 -->
+
+							</div>
+							<!-- 商品赠品 -->
+							<div class="prom-gift SZY-GIFT-LIST" style="display: none;">
+								<div class="dt">买即送</div>
+								<div class="dd">
+									<span class="prom-gift-label SZY-GIFT-LABEL">
+								<em>赠品</em>
+							</span>
+
+								</div>
+								<div>赠完为止</div>
+							</div>
+							<!-- 本店活动 
+					<div class="shop-prom">
+						<div class="shop-prom-title">
+							<dt class="dt">本店活动</dt>
+							<dd>满99元,包邮</dd>
+							<a class="more">
+								更多活动
+								<i></i>
+							</a>
+						</div>
+						<div class="shop-prom-Box">
+							<div class="floater">
+								<div class="hd">
+									<em class="title">本店活动</em>
+									<ul class="bd">
+										<li>
+											<a href="" target="_blank" title="">满99元,包邮</a>
+										</li>
+										<li>
+											<a href="" target="_blank" title="">热卖手机满6000打9折,嗨翻全场</a>
+										</li>
+										<li>
+											<a href="" target="_blank" title="">热卖手机满2000送手机配件</a>
+										</li>
+									</ul>
+									<a class="more unmore">
+										收起
+										<i></i>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					-->
+
+						</div>
+						<!-- 在售的商品 _start -->
+						<!-- 运费 -->
+						<div class="freight">
+							<div class="dt">配送至</div>
+							<div class="dd">
+								<div class="post-age">
+									<div class="region-chooser-container" style="z-index: 3"></div>
+									<div class="post-age-info">
+										<p>
+											<span class="freight-info"></span>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 服务 -->
+						<div class="freight">
+							<div class="dt">服&nbsp;&nbsp;&nbsp;务</div>
+							<div class="dd">
+								<div class="post-age">
+									由
+									<a href="http://www.itsource.cn/shop/6.html" target="_blank" class="color">爱购网官方自营二号店</a>
+									负责发货，并提供售后服务。
+								</div>
+							</div>
+						</div>
+						<!-- 评价、销量、积分 -->
+						<div class="info-other">
+							<ul class="other">
+								<li>
+									<p>
+										累积评价
+										<span>
+									<a id="evaluate_num" href="http://www.itsource.cn/6043.html#goods_evaluate" class="second-color">5人评价</a>
+								</span>
+									</p>
+								</li>
+								<li>
+									<p>
+										累计销量
+										<span class="second-color">164771</span>
+									</p>
+								</li>
+								<li class="last">
+									<p>
+										赠送积分
+										<span class="second-color">0</span>
+									</p>
+								</li>
+							</ul>
+						</div>
+						<div class="choose">
+							<!-- 商品规格 -->
+
+														<dl class="attr">
+								<dt class="dt">年龄</dt>
+								<dd class="dd">
+									<ul>
+																																	<!-- 属性值被选中的状态 -->
+												<li class="goods-spec-item selected" data-spec-id="3140" data-is-default="1">
+
+													<a href="javascript:void(0);" title="少女" @click="changeSku(1,1)">
+														<span class="value-label">少女</span>
+													</a>
+
+													<i></i></li>
+											
+																																	<!-- 属性值被选中的状态 -->
+												<li class="goods-spec-item" data-spec-id="3140" data-is-default="1">
+
+													<a @click="changeSku(1,2)" href="javascript:void(0);" title="妇女">
+
+														<span class="value-label">妇女</span>
+													</a>
+
+													<i></i></li>
+											
+																			</ul>
+								</dd>
+							</dl>
+														<dl class="attr">
+								<dt class="dt">肤色</dt>
+								<dd class="dd">
+									<ul>
+																																	<!-- 属性值被选中的状态 -->
+												<li class="goods-spec-item selected" data-spec-id="3140" data-is-default="1">
+
+													<a href="javascript:void(0);" title="36D" @click="changeSku(2,1)">
+														<span class="value-label">36D</span>
+													</a>
+
+													<i></i></li>
+											
+																																	<!-- 属性值被选中的状态 -->
+												<li class="goods-spec-item" data-spec-id="3140" data-is-default="1">
+
+													<a @click="changeSku(2,2)" href="javascript:void(0);" title="48F">
+
+														<span class="value-label">48F</span>
+													</a>
+
+													<i></i></li>
+											
+																			</ul>
+								</dd>
+							</dl>
+							
+							<!-- 购买数量 -->
+							<dl class="amount">
+								<dt class="dt">数量</dt>
+								<dd class="dd">
+									<span class="amount-widget">
+								<input type="text" class="amount-input" value="1" data-amount-min="1" data-amount-max="491" maxlength="8" title="请输入购买量">
+								<span class="amount-btn">
+									<span class="amount-plus">
+										<i>+</i>
+									</span>
+									<span class="amount-minus">
+										<i>-</i>
+									</span>
+									</span>
+									<span class="amount-unit">件</span>
+									</span>
+									<em class="stock SZY-GOODS-NUMBER">库存{{store}}件</em>
+
+								</dd>
+							</dl>
+							<!-- 限购提示语 -->
+
+							<!-- 加入购物车按钮、手机购买 -->
+							<div class="action">
+								<div class="btn-buy">
+									<a href="javascript:void(0);" class="buy-goods color">
+										<span class="buy-goods-bg bg-color"></span>
+										<span class="buy-goods-border"></span> 立即购买
+									</a>
+								</div>
+								<div class="btn-buy">
+									<a href="javascript:void(0);" class="add-cart bg-color">
+										<i></i> 加入购物车
+									</a>
+								</div>
+								<div class="btn-buy">
+									<a href="javascript:void(0);" class="no-auth hide"> 无权购买 </a>
+								</div>
+								<div class="btn-phone">
+									<a href="http://www.itsource.cn/6043.html" class="go-phone">
+										<span>手机购买</span>
+										<i></i>
+										<div id="phone-tan" style="display: none;">
+											<span class="arr"></span>
+											<div class="m-qrcode-wrap">
+												<img src="../img/test/mall_wx_qrcode_0.jpg" width="100" height="100">
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+							<!-- 服务承诺 -->
+
+						</div>
+
+						<!-- 在售的商品 _end -->
+
+					</form>
+				</div>
+				<!-- 商品详细信息 _end-->
+				<!-- 店铺信息 _star-->
+				<div class="store-info">
+					<dl class="store-logo">
+						<a href="javascript:void(0);">
+							<img src="../img/test/default_shop_logo_0.gif" width="" height="">
+						</a>
+					</dl>
+					<dl class="store-name third-store">
+
+						<a href="javascript:void(0);" class="name" title="爱购网官方自营二号店">爱购网官方自营二号店</a>
+					</dl>
+
+					<dl class="store-score">
+						<dd>
+							<!-- 通过分数判断width的宽度-->
+							<div class="score-sum color">
+								4.39
+								<span>综合</span>
+							</div>
+							<ul class="score-part">
+								<li>
+									<span class="score-desc">描述相符</span>
+									<span class="score-detail color">4.17</span>
+								</li>
+								<li>
+									<span class="score-desc">服务态度</span>
+									<span class="score-detail color">4.50</span>
+								</li>
+								<li>
+									<span class="score-desc">发货速度</span>
+									<span class="score-detail color">4.50</span>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<dl class="store-other">
+						<dt>信 誉：</dt>
+						<dd>
+							<img src="../img/test/14653018315416.gif" class="rank" title="普通皇冠五">
+						</dd>
+					</dl>
+
+					<dl class="store-other">
+						<dt>所在地：</dt>
+						<dd>四川省 成都市</dd>
+					</dl>
+					<!-- 客服 -->
+
+					<dl class="store-other">
+						<dt class="tool">客 服：</dt>
+						<dd class="tool">
+							<a href="javascript:void(0);" data-goods_id="429" class="service-btn">
+								<img src="../img/test/openim.png" width="20" height="20" border="0" alt="在线客服">
+								<span>在线客服</span>
+							</a>
+						</dd>
+					</dl>
+
+					<dl class="store-other">
+						<dt>工商执照：</dt>
+						<dd>
+							<a id="license" href="javascript:void(0);">
+								<img src="../img/test/national_emblem_light.png" height="18" title="工商执照">
+							</a>
+						</dd>
+					</dl>
+
+					<div class="enter-store">
+						<div class="enter-store-item">
+							<a class="bg-color goto-shop" href="javascript:void(0);">
+								<i></i> 进入店铺
+							</a>
+							<a class="bg-color shop-add " href="javascript:void(0);">
+								<i></i>
+								<span>
+					
+					收藏本店
+					
+				</span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<!-- 店铺信息 _end-->
+			</div>
+
+			<!-- 搭配套餐 -->
+
+			<!-- 内容 -->
+			<div class="clearfix">
+				<!-- 左半部分内容 -->
+				<div class="fl">
+					<!-- 客服组 -->
+
+					<div class="store-service">
+						<div class="store-logo"><img src="../img/test/service.png" width="" height=""></div>
+						<div class="store-service-group left-content">
+							<div class="store-service-type first">
+								<h4>在线咨询</h4>
+
+								<div class="service-list">
+									<em>咨询客服qq</em>
+
+									<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=xxxxxxxxxx&amp;site=qq&amp;menu=yes" class="service-btn">
+										<img border="0" src="../img/test/pa" alt="QQ" title="点击这里给我发消息" style="height: 20px;">
+										<span>客服一</span>
+									</a>
+
+									<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=xxxxxxxxxx&amp;site=qq&amp;menu=yes" class="service-btn">
+										<img border="0" src="../img/test/pa" alt="QQ" title="点击这里给我发消息" style="height: 20px;">
+										<span>客服十</span>
+									</a>
+
+									<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=xxxxxxxxxx&amp;site=qq&amp;menu=yes" class="service-btn">
+										<img border="0" src="../img/test/pa" alt="QQ" title="点击这里给我发消息" style="height: 20px;">
+										<span>客服三</span>
+									</a>
+
+									<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=xxxxxxxxxx&amp;site=qq&amp;menu=yes" class="service-btn">
+										<img border="0" src="../img/test/pa" alt="QQ" title="点击这里给我发消息" style="height: 20px;">
+										<span>客服四</span>
+									</a>
+
+									<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=xxxxxxxxxx&amp;site=qq&amp;menu=yes" class="service-btn">
+										<img border="0" src="../img/test/pa" alt="QQ" title="点击这里给我发消息" style="height: 20px;">
+										<span>客服五</span>
+									</a>
+
+									<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=xxxxxxxxxx&amp;site=qq&amp;menu=yes" class="service-btn">
+										<img border="0" src="../img/test/pa" alt="QQ" title="点击这里给我发消息" style="height: 20px;">
+										<span>客服六</span>
+									</a>
+
+									<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=xxxxxxxxxx&amp;site=qq&amp;menu=yes" class="service-btn">
+										<img border="0" src="../img/test/pa" alt="QQ" title="点击这里给我发消息" style="height: 20px;">
+										<span>客服七</span>
+									</a>
+
+									<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=xxxxxxxxxx&amp;site=qq&amp;menu=yes" class="service-btn">
+										<img border="0" src="../img/test/pa" alt="QQ" title="点击这里给我发消息" style="height: 20px;">
+										<span>客服八</span>
+									</a>
+
+									<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=xxxxxxxxxx&amp;site=qq&amp;menu=yes" class="service-btn">
+										<img border="0" src="../img/test/pa" alt="QQ" title="点击这里给我发消息" style="height: 20px;">
+										<span>客服九</span>
+									</a>
+
+									<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=xxxxxxxxxx&amp;site=qq&amp;menu=yes" class="service-btn">
+										<img border="0" src="../img/test/pa" alt="QQ" title="点击这里给我发消息" style="height: 20px;">
+										<span>客服二</span>
+									</a>
+
+								</div>
+
+								<div class="service-list">
+									<em>咨询客服旺旺</em>
+
+									<a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid=ilovebuy&amp;s=2" target="_blank" class="service-btn">
+										<img src="../img/test/online.ww" border="0" alt="淘宝旺旺">
+										<span>客服七</span>
+									</a>
+
+									<a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid=ilovebuy&amp;s=2" target="_blank" class="service-btn">
+										<img src="../img/test/online.ww" border="0" alt="淘宝旺旺">
+										<span>客服三</span>
+									</a>
+
+									<a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid=ilovebuy&amp;s=2" target="_blank" class="service-btn">
+										<img src="../img/test/online.ww" border="0" alt="淘宝旺旺">
+										<span>客服四</span>
+									</a>
+
+									<a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid=ilovebuy&amp;s=2" target="_blank" class="service-btn">
+										<img src="../img/test/online.ww" border="0" alt="淘宝旺旺">
+										<span>客服五</span>
+									</a>
+
+									<a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid=ilovebuy&amp;s=2" target="_blank" class="service-btn">
+										<img src="../img/test/online.ww" border="0" alt="淘宝旺旺">
+										<span>客服六</span>
+									</a>
+
+									<a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid=ilovebuy&amp;s=2" target="_blank" class="service-btn">
+										<img src="../img/test/online.ww" border="0" alt="淘宝旺旺">
+										<span>客服八</span>
+									</a>
+
+									<a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid=ilovebuy&amp;s=2" target="_blank" class="service-btn">
+										<img src="../img/test/online.ww" border="0" alt="淘宝旺旺">
+										<span>客服九</span>
+									</a>
+
+									<a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid=ilovebuy&amp;s=2" target="_blank" class="service-btn">
+										<img src="../img/test/online.ww" border="0" alt="淘宝旺旺">
+										<span>客服十</span>
+									</a>
+
+									<a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid=ilovebuy&amp;s=2" target="_blank" class="service-btn">
+										<img src="../img/test/online.ww" border="0" alt="淘宝旺旺">
+										<span>客服一</span>
+									</a>
+
+									<a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid=ilovebuy&amp;s=2" target="_blank" class="service-btn">
+										<img src="../img/test/online.ww" border="0" alt="淘宝旺旺">
+										<span>客服二</span>
+									</a>
+
+								</div>
+
+								<div class="service-list">
+									<em>在线客服</em>
+									<a href="javascript:;" data-goods_id="429" class="service-btn">
+										<img src="../img/test/openim.png" width="20" height="20" border="0" alt="在线客服">
+										<span>联系我们</span>
+									</a>
+								</div>
+
+							</div>
+							<!---->
+							<div class="store-service-type">
+								<h4>工作时间</h4>
+								<div class="service-time">
+									<p>工作时间 AM 08:00 - PM 20:00</p>
+								</div>
+							</div>
+							<!---->
+						</div>
+
+					</div>
+
+					<!-- 店内分类 -->
+					<!-- -->
+					<div class="store-category">
+						<h3 class="left-title">店内分类</h3>
+						<div class="left-content tree">
+							<ul>
+
+								<li class="parent_li">
+									<span>
+								<i class="icon-minus-sign"></i>
+							</span>
+									<a href="http://www.itsource.cn/shop/6/list.html?cat_id=10" target="_self" title="男装" class="tree-first">男装</a>
+									<ul>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=12" target="_self" title="男装">男装</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=15" target="_self" title="小西装">小西装</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=61" target="_self" title="棉服">棉服</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=62" target="_self" title="针织衫">针织衫</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=63" target="_self" title="夹克羊毛衫">夹克羊毛衫</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=64" target="_self" title="加绒裤">加绒裤</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=65" target="_self" title="真皮皮衣">真皮皮衣</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=69" target="_self" title="T恤">T恤</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=70" target="_self" title="西服套装">西服套装</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=71" target="_self" title="牛仔裤">牛仔裤</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=72" target="_self" title="毛呢大衣">毛呢大衣</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=73" target="_self" title="风衣">风衣</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=74" target="_self" title="仿皮皮衣">仿皮皮衣</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=75" target="_self" title="卫裤/运动裤">卫裤/运动裤</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=76" target="_self" title="短裤">短裤</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=77" target="_self" title="中老年男装">中老年男装</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=78" target="_self" title="大码男装">大码男装</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=79" target="_self" title="羊绒衫">羊绒衫</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=80" target="_self" title="工装唐装/中山装">工装唐装/中山装</a>
+										</li>
+
+									</ul>
+								</li>
+
+								<li class="parent_li">
+									<span>
+								<i class="icon-minus-sign"></i>
+							</span>
+									<a href="http://www.itsource.cn/shop/6/list.html?cat_id=16" target="_self" title="女装" class="tree-first">女装</a>
+									<ul>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=18" target="_self" title="休闲裤">休闲裤</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=19" target="_self" title="大码女装">大码女装</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=20" target="_self" title="中老年女装">中老年女装</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=21" target="_self" title="潮牌">潮牌</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=22" target="_self" title="半身裙">半身裙</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=25" target="_self" title="仿皮皮衣">仿皮皮衣</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=26" target="_self" title="马甲">马甲</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=27" target="_self" title="正装裤">正装裤</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=28" target="_self" title="礼服">礼服</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=29" target="_self" title="旗袍">旗袍</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=30" target="_self" title="雪纺衫">雪纺衫</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=31" target="_self" title="吊带">吊带</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=32" target="_self" title="短裤">短裤</a>
+										</li>
+
+									</ul>
+								</li>
+
+								<li class="parent_li">
+									<span>
+								<i class="icon-minus-sign"></i>
+							</span>
+									<a href="http://www.itsource.cn/shop/6/list.html?cat_id=17" target="_self" title="内衣类" class="tree-first">内衣类</a>
+									<ul>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=33" target="_self" title="保暖内衣">保暖内衣</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=34" target="_self" title="秋衣秋裤">秋衣秋裤</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=35" target="_self" title="男士内裤">男士内裤</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=36" target="_self" title="女式内裤">女式内裤</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=37" target="_self" title="休闲棉袜">休闲棉袜</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=38" target="_self" title="商式男袜">商式男袜</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=39" target="_self" title="打底衫">打底衫</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=40" target="_self" title="睡衣">睡衣</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=41" target="_self" title="文胸">文胸</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=42" target="_self" title="打底裤袜">打底裤袜</a>
+										</li>
+
+									</ul>
+								</li>
+
+								<li class="parent_li">
+									<span>
+								<i class="icon-minus-sign"></i>
+							</span>
+									<a href="http://www.itsource.cn/shop/6/list.html?cat_id=44" target="_self" title="女鞋" class="tree-first">女鞋</a>
+									<ul>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=45" target="_self" title="防水台">防水台</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=47" target="_self" title="马丁靴">马丁靴</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=48" target="_self" title="雪地靴">雪地靴</a>
+										</li>
+
+									</ul>
+								</li>
+
+								<li class="parent_li">
+									<span>
+								<i class="icon-minus-sign"></i>
+							</span>
+									<a href="http://www.itsource.cn/shop/6/list.html?cat_id=49" target="_self" title="男鞋" class="tree-first">男鞋</a>
+									<ul>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=50" target="_self" title="商务休闲鞋">商务休闲鞋</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=51" target="_self" title="正装鞋">正装鞋</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=52" target="_self" title="帆布鞋">帆布鞋</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=53" target="_self" title="增高鞋">增高鞋</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=54" target="_self" title="沙滩鞋">沙滩鞋</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=55" target="_self" title="传统布鞋">传统布鞋</a>
+										</li>
+
+									</ul>
+								</li>
+
+								<li class="parent_li">
+									<span>
+								<i class="icon-minus-sign"></i>
+							</span>
+									<a href="http://www.itsource.cn/shop/6/list.html?cat_id=56" target="_self" title="运动鞋包" class="tree-first">运动鞋包</a>
+									<ul>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=57" target="_self" title="跑步鞋">跑步鞋</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=58" target="_self" title="休闲鞋">休闲鞋</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=59" target="_self" title="篮球鞋">篮球鞋</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=60" target="_self" title="帆布鞋">帆布鞋</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=81" target="_self" title="板鞋">板鞋</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=82" target="_self" title="拖鞋">拖鞋</a>
+										</li>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=83" target="_self" title="训练鞋">训练鞋</a>
+										</li>
+
+									</ul>
+								</li>
+
+								<li class="parent_li">
+									<span>
+								<i class="icon-minus-sign"></i>
+							</span>
+									<a href="http://www.itsource.cn/shop/6/list.html?cat_id=84" target="_self" title="运动服饰" class="tree-first">运动服饰</a>
+									<ul>
+
+										<li>
+											<span>
+										<i class="arrow"></i>
+									</span>
+											<a href="http://www.itsource.cn/shop/6/list.html?cat_id=85" target="_self" title="T恤">T恤</a>
+										</li>
+
+									</ul>
+								</li>
+
+							</ul>
+						</div>
+					</div>
+
+					<!-- 排行榜 -->
+
+					<div class="store-rank-list">
+						<h3 class="left-title">店内排行榜</h3>
+						<div class="left-content rank-list">
+							<ul class="tab-nav j-tab-nav">
+								<li class="current">销售量</li>
+								<li class="">收藏数</li>
+							</ul>
+							<div class="tab-con">
+								<div class="j-tab-con">
+									<ul class="goods-list" style="display: block;">
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/47238.html" title="花花公子男士纯棉秋衣秋裤薄款棉毛衫青年全棉基础保暖内衣男套装">
+													<img src="../img/test/TB1RwYELXXXXXXHaXXXXXXXXXXX_!!0-item_pic.jpg">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/47238.html" title="花花公子男士纯棉秋衣秋裤薄款棉毛衫青年全棉基础保暖内衣男套装">花花公子男士纯棉秋衣秋裤薄款棉毛衫青年全棉基础保暖内衣男套装</a>
+												<span class="color">￥79.00</span>
+											</div>
+										</li>
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/48007.html" title="南极人男士内裤男纯棉质平角裤大码青年卡通四角内裤男生可爱裤头">
+													<img src="../img/test/TB13UeJKVXXXXcJXpXXXXXXXXXX_!!0-item_pic.jpg">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/48007.html" title="南极人男士内裤男纯棉质平角裤大码青年卡通四角内裤男生可爱裤头">南极人男士内裤男纯棉质平角裤大码青年卡通四角内裤男生可爱裤头</a>
+												<span class="color">￥35.80</span>
+											</div>
+										</li>
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/46754.html" title="南极人男士保暖内衣男加厚加绒女冬秋衣秋裤中老年保暖套装防寒衣">
+													<img src="../img/test/TB186J.NpXXXXbXXFXXXXXXXXXX_!!0-item_pic.jpg">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/46754.html" title="南极人男士保暖内衣男加厚加绒女冬秋衣秋裤中老年保暖套装防寒衣">南极人男士保暖内衣男加厚加绒女冬秋衣秋裤中老年保暖套装防寒衣</a>
+												<span class="color">￥49.90</span>
+											</div>
+										</li>
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/55413.html" title="南极人丝袜连裤袜防勾丝秋季中厚打底裤袜秋冬款加绒加厚连体连脚">
+													<img src="../img/test/TB12zSlNVXXXXb.aXXXXXXXXXXX_!!0-item_pic.jpg">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/55413.html" title="南极人丝袜连裤袜防勾丝秋季中厚打底裤袜秋冬款加绒加厚连体连脚">南极人丝袜连裤袜防勾丝秋季中厚打底裤袜秋冬款加绒加厚连体连脚</a>
+												<span class="color">￥12.60</span>
+											</div>
+										</li>
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/46670.html" title="南极人男士女士秋衣秋裤棉毛衫圆领打底薄款情侣保暖内衣女套装">
+													<img src="../img/test/TB1kTfaOXXXXXb6XpXXXXXXXXXX_!!0-item_pic.jpg">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/46670.html" title="南极人男士女士秋衣秋裤棉毛衫圆领打底薄款情侣保暖内衣女套装">南极人男士女士秋衣秋裤棉毛衫圆领打底薄款情侣保暖内衣女套装</a>
+												<span class="color">￥39.80</span>
+											</div>
+										</li>
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/46611.html" title="南极人保暖内衣男士女士双层加厚加绒冬季秋衣秋裤套装黄金绒暖甲">
+													<img src="../img/test/TB1aShoOpXXXXb.XFXXXXXXXXXX_!!0-item_pic.jpg">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/46611.html" title="南极人保暖内衣男士女士双层加厚加绒冬季秋衣秋裤套装黄金绒暖甲">南极人保暖内衣男士女士双层加厚加绒冬季秋衣秋裤套装黄金绒暖甲</a>
+												<span class="color">￥39.90</span>
+											</div>
+										</li>
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/50058.html" title="袜子男纯棉中筒袜棉袜秋冬季短袜全棉吸汗防臭男士商务男袜礼盒装">
+													<img src="../img/test/TB17pAPMVXXXXcbXpXXYXGcGpXX_M2.SS2">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/50058.html" title="袜子男纯棉中筒袜棉袜秋冬季短袜全棉吸汗防臭男士商务男袜礼盒装">袜子男纯棉中筒袜棉袜秋冬季短袜全棉吸汗防臭男士商务男袜礼盒装</a>
+												<span class="color">￥25.80</span>
+											</div>
+										</li>
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/48868.html" title="南极人无痕内裤女纯棉裆性感大码中腰女士裤头棉质面料少女三角裤">
+													<img src="../img/test/TB18nkXOXXXXXXvXFXXXXXXXXXX_!!0-item_pic.jpg">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/48868.html" title="南极人无痕内裤女纯棉裆性感大码中腰女士裤头棉质面料少女三角裤">南极人无痕内裤女纯棉裆性感大码中腰女士裤头棉质面料少女三角裤</a>
+												<span class="color">￥39.90</span>
+											</div>
+										</li>
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/48123.html" title="彼尔丹5条礼盒装男士内裤纯棉质性感潮青年平角裤四角裤男生裤头">
+													<img src="../img/test/TB1XxpOLpXXXXauapXXXXXXXXXX_!!0-item_pic.jpg">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/48123.html" title="彼尔丹5条礼盒装男士内裤纯棉质性感潮青年平角裤四角裤男生裤头">彼尔丹5条礼盒装男士内裤纯棉质性感潮青年平角裤四角裤男生裤头</a>
+												<span class="color">￥29.90</span>
+											</div>
+										</li>
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/29637.html" title="英伦车一次性口罩防尘防雾霾病菌可爱男女冬季黑潮款透气50只加厚">
+													<img src="../img/test/TB1CXZANVXXXXalaFXXXXXXXXXX_!!0-item_pic.jpg">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/29637.html" title="英伦车一次性口罩防尘防雾霾病菌可爱男女冬季黑潮款透气50只加厚">英伦车一次性口罩防尘防雾霾病菌可爱男女冬季黑潮款透气50只加厚</a>
+												<span class="color">￥8.10</span>
+											</div>
+										</li>
+
+									</ul>
+									<ul class="goods-list" style="display: none;">
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/80904.html" title="秋冬季男士中长款风衣男款韩版修身型毛呢大衣男装呢子加厚外套潮">
+													<img src="../img/test/TB1deEVJVXXXXaVXVXXXXXXXXXX_!!0-item_pic.jpg">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/80904.html" title="秋冬季男士中长款风衣男款韩版修身型毛呢大衣男装呢子加厚外套潮">秋冬季男士中长款风衣男款韩版修身型毛呢大衣男装呢子加厚外套潮</a>
+												<span class="color">￥88.00</span>
+											</div>
+										</li>
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/20171.html" title="2016冬季加绒棉鞋男士休闲鞋韩版板鞋潮鞋冬款加厚保暖防水男鞋子">
+													<img src="../img/test/TB1m1qWNFXXXXcCXFXXXXXXXXXX_!!0-item_pic.jpg">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/20171.html" title="2016冬季加绒棉鞋男士休闲鞋韩版板鞋潮鞋冬款加厚保暖防水男鞋子">2016冬季加绒棉鞋男士休闲鞋韩版板鞋潮鞋冬款加厚保暖防水男鞋子</a>
+												<span class="color">￥29.90</span>
+											</div>
+										</li>
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/71606.html" title="男士男鞋布鞋秋季潮鞋帆布鞋休闲鞋高帮鞋板鞋子懒人鞋冬季棉鞋男">
+													<img src="../img/test/TB1PlFbNpXXXXb7XFXXXXXXXXXX_!!0-item_pic.jpg">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/71606.html" title="男士男鞋布鞋秋季潮鞋帆布鞋休闲鞋高帮鞋板鞋子懒人鞋冬季棉鞋男">男士男鞋布鞋秋季潮鞋帆布鞋休闲鞋高帮鞋板鞋子懒人鞋冬季棉鞋男</a>
+												<span class="color">￥39.00</span>
+											</div>
+										</li>
+
+										<li class="goods-item first">
+											<div class="picture">
+												<a href="http://www.itsource.cn/71433.html" title="环球白色高帮帆布鞋女春秋男平底平跟学生板鞋黑布鞋韩版情侣球鞋">
+													<img src="../img/test/TB1vu39LFXXXXXHXXXXXXXXXXXX_!!0-item_pic.jpg">
+												</a>
+											</div>
+											<div class="price">
+												<a href="http://www.itsource.cn/71433.html" title="环球白色高帮帆布鞋女春秋男平底平跟学生板鞋黑布鞋韩版情侣球鞋">环球白色高帮帆布鞋女春秋男平底平跟学生板鞋黑布鞋韩版情侣球鞋</a>
+												<span class="color">￥39.00</span>
+											</div>
+										</li>
+
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 您浏览过 -->
+
+				</div>
+				<!-- 右半部分内容 -->
+				<div class="right right-con">
+					<div class="wrapper">
+						<div id="main-nav-holder" class="goods-detail">
+							<ul id="nav" class="tab">
+
+								<li class="title-list current">
+									<a href="javascript:;">规格参数</a>
+								</li>
+
+								<li class="title-list">
+									<a href="javascript:;">商品详情</a>
+								</li>
+								<li class="title-list">
+									<a id="evaluate_count" href="javascript:;">累计评价(5)</a>
+								</li>
+
+							</ul>
+							<div class="right-side">
+								<!-- 失效不展示 -->
+
+								<a href="javascript:void(0);" class="right-addcart add-cart" id="right-addcart">
+									<i></i> 加入购物车
+								</a>
+
+								<div class="right-side-con" style="height: 317px;">
+									<ul class="right-side-ul">
+
+										<li class="abs-active">
+											<i></i>
+											<span>规格参数</span>
+										</li>
+
+										<li class="">
+											<i></i>
+											<span>商品详情</span>
+										</li>
+										<li class="">
+											<i></i>
+											<span>商品评价</span>
+										</li>
+
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div id="main_widget_1">
+							
+							
+							<!-- 规格参数 _star -->
+					
+					<div id="goods_attr_list" class="goods-detail-con goods-detail-tabs">
+						<ul class="goods-spec">
+															<li>
+									sex：
+									<span id="goods_attr_" title="男" class="goods-attr-value">男</span>
+								</li>
+															<li>
+									老家：
+									<span id="goods_attr_" title="越南" class="goods-attr-value">越南</span>
+								</li>
+															<li>
+									是否保修：
+									<span id="goods_attr_" title="否" class="goods-attr-value">否</span>
+								</li>
+													</ul>
+					</div>
+					
+					<!-- 规格参数 _end -->
+					<!-- 商品详情 _star -->
+					<div id="goods_introduce" class="goods-detail-con goods-detail-tabs">
+						<!-- 店铺红包 -->
+						
+						<!-- 推荐商品 -->
+						
+						<!-- 商品后台上传的商品描述 -->
+						
+
+						<p><u>sadfsdfds</u><img src="data:image/png;base64,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"></p>
+
+					</div>
+					<!-- 商品详情 end -->
+
+					<!-- 商品评价 start -->
+					<div id="goods_evaluate" class="goods-detail-con goods-detail-tabs"></div>
+					<!-- 商品评价 end -->
+							
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="content" style="display: none;">
+			<p class="common-right">
+				一般情况下，退货处理周期（不包含检测时间）：自接收到问题商品之日起 7 日之内为您处理完成，各支付方式退款时间请点击查阅退款多久可以到账；
+				<br> 换货处理周期：自接收到问题商品之日起 15 日之内为您处理完成；
+				<br> 正常维修处理周期：自接收到问题商品之日起 30 日内为您处理完成。
+			</p>
+		</div>
+		<!-- 头部右侧鼠标经过图片放大效果 _start -->
+		<script type="text/javascript" src="../js/bubbleup.js"></script>
+		<!-- 头部右侧鼠标经过图片放大效果 _end -->
+		<!-- 套餐、店内排行等左右切换效果 _start-->
+		<script type="text/javascript" src="../js/tabs.js"></script>
+		<!-- 套餐、店内排行等左右切换效果 _end -->
+		<!-- 右侧商品信息等定位切换效果 _start -->
+		<script type="text/javascript" src="../js/tabs_totop.js"></script>
+		<!-- 右侧商品信息等定位切换效果 _end -->
+		<!-- 放大镜 _start -->
+		<script type="text/javascript" src="../js/magiczoom.js"></script>
+		<!-- 放大镜 _end -->
+		<!-- 控制图片经过放大 -->
+		<script type="text/javascript" src="../js/goods.js"></script>
+		<!-- 地址选择 _start -->
+		<script type="text/javascript" src="../js/select_region.js"></script>
+		<!-- 地址选择 _end -->
+		<script id="SZY_GIFT_TEMPLATE" type="text">
+			<div class="prom-gift-list">
+				<a href="" title="" target="_blank">
+					<img src="" width="25" height="25" class="gift-img" />
+				</a>
+				<em class="gift-number color">×</em>
+			</div>
+		</script>
+		<script id="SZY_SKU_LIST" type="text">
+			{"3138|3153":{"sku_id":"5996","spec_ids":"3138|3153"},"3148|3150":{"sku_id":"5997","spec_ids":"3148|3150"},"3132|3155":{"sku_id":"5998","spec_ids":"3132|3155"},"3135|3150":{"sku_id":"5999","spec_ids":"3135|3150"},"3137|3150":{"sku_id":"6000","spec_ids":"3137|3150"},"3147|3151":{"sku_id":"6001","spec_ids":"3147|3151"},"3131|3151":{"sku_id":"6002","spec_ids":"3131|3151"},"3126|3156":{"sku_id":"6003","spec_ids":"3126|3156"},"3145|3156":{"sku_id":"6004","spec_ids":"3145|3156"},"3142|3150":{"sku_id":"6005","spec_ids":"3142|3150"},"3130|3155":{"sku_id":"6006","spec_ids":"3130|3155"},"3143|3150":{"sku_id":"6007","spec_ids":"3143|3150"},"3143|3153":{"sku_id":"6008","spec_ids":"3143|3153"},"3128|3153":{"sku_id":"6009","spec_ids":"3128|3153"},"3141|3153":{"sku_id":"6010","spec_ids":"3141|3153"},"3128|3151":{"sku_id":"6011","spec_ids":"3128|3151"},"3136|3153":{"sku_id":"6012","spec_ids":"3136|3153"},"3127|3151":{"sku_id":"6013","spec_ids":"3127|3151"},"3140|3153":{"sku_id":"6014","spec_ids":"3140|3153"},"3133|3150":{"sku_id":"6015","spec_ids":"3133|3150"},"3145|3153":{"sku_id":"6016","spec_ids":"3145|3153"},"3128|3156":{"sku_id":"6017","spec_ids":"3128|3156"},"3146|3153":{"sku_id":"6018","spec_ids":"3146|3153"},"3129|3150":{"sku_id":"6019","spec_ids":"3129|3150"},"3136|3156":{"sku_id":"6020","spec_ids":"3136|3156"},"3139|3154":{"sku_id":"6021","spec_ids":"3139|3154"},"3144|3153":{"sku_id":"6022","spec_ids":"3144|3153"},"3126|3153":{"sku_id":"6023","spec_ids":"3126|3153"},"3144|3156":{"sku_id":"6024","spec_ids":"3144|3156"},"3142|3151":{"sku_id":"6025","spec_ids":"3142|3151"},"3129|3151":{"sku_id":"6026","spec_ids":"3129|3151"},"3141|3150":{"sku_id":"6027","spec_ids":"3141|3150"},"3140|3150":{"sku_id":"6028","spec_ids":"3140|3150"},"3127|3154":{"sku_id":"6029","spec_ids":"3127|3154"},"3139|3151":{"sku_id":"6030","spec_ids":"3139|3151"},"3146|3150":{"sku_id":"6031","spec_ids":"3146|3150"},"3133|3153":{"sku_id":"6032","spec_ids":"3133|3153"},"3134|3150":{"sku_id":"6033","spec_ids":"3134|3150"},"3138|3150":{"sku_id":"6034","spec_ids":"3138|3150"},"3135|3155":{"sku_id":"6035","spec_ids":"3135|3155"},"3147|3153":{"sku_id":"6036","spec_ids":"3147|3153"},"3138|3156":{"sku_id":"6037","spec_ids":"3138|3156"},"3131|3153":{"sku_id":"6038","spec_ids":"3131|3153"},"3146|3156":{"sku_id":"6039","spec_ids":"3146|3156"},"3147|3156":{"sku_id":"6040","spec_ids":"3147|3156"},"3131|3156":{"sku_id":"6041","spec_ids":"3131|3156"},"3137|3155":{"sku_id":"6042","spec_ids":"3137|3155"},"3140|3156":{"sku_id":"6043","spec_ids":"3140|3156"},"3141|3156":{"sku_id":"6044","spec_ids":"3141|3156"},"3143|3156":{"sku_id":"6045","spec_ids":"3143|3156"},"3129|3153":{"sku_id":"6046","spec_ids":"3129|3153"},"3148|3155":{"sku_id":"6047","spec_ids":"3148|3155"},"3142|3153":{"sku_id":"6048","spec_ids":"3142|3153"},"3134|3153":{"sku_id":"6049","spec_ids":"3134|3153"},"3145|3155":{"sku_id":"6050","spec_ids":"3145|3155"},"3144|3155":{"sku_id":"6051","spec_ids":"3144|3155"},"3126|3155":{"sku_id":"6052","spec_ids":"3126|3155"},"3128|3155":{"sku_id":"6053","spec_ids":"3128|3155"},"3138|3152":{"sku_id":"6054","spec_ids":"3138|3152"},"3136|3155":{"sku_id":"6055","spec_ids":"3136|3155"},"3140|3152":{"sku_id":"6056","spec_ids":"3140|3152"},"3146|3152":{"sku_id":"6057","spec_ids":"3146|3152"},"3149|3154":{"sku_id":"6058","spec_ids":"3149|3154"},"3137|3156":{"sku_id":"6059","spec_ids":"3137|3156"},"3135|3156":{"sku_id":"6060","spec_ids":"3135|3156"},"3148|3156":{"sku_id":"6061","spec_ids":"3148|3156"},"3130|3150":{"sku_id":"6062","spec_ids":"3130|3150"},"3131|3155":{"sku_id":"6063","spec_ids":"3131|3155"},"3132|3150":{"sku_id":"6064","spec_ids":"3132|3150"},"3139|3156":{"sku_id":"6065","spec_ids":"3139|3156"},"3147|3155":{"sku_id":"6066","spec_ids":"3147|3155"},"3126|3151":{"sku_id":"6067","spec_ids":"3126|3151"},"3145|3151":{"sku_id":"6068","spec_ids":"3145|3151"},"3136|3151":{"sku_id":"6069","spec_ids":"3136|3151"},"3144|3151":{"sku_id":"6070","spec_ids":"3144|3151"},"3137|3152":{"sku_id":"6071","spec_ids":"3137|3152"},"3135|3152":{"sku_id":"6072","spec_ids":"3135|3152"},"3132|3156":{"sku_id":"6073","spec_ids":"3132|3156"},"3130|3156":{"sku_id":"6074","spec_ids":"3130|3156"},"3143|3152":{"sku_id":"6075","spec_ids":"3143|3152"},"3141|3152":{"sku_id":"6076","spec_ids":"3141|3152"},"3149|3155":{"sku_id":"6077","spec_ids":"3149|3155"},"3149|3151":{"sku_id":"6078","spec_ids":"3149|3151"},"3139|3152":{"sku_id":"6079","spec_ids":"3139|3152"},"3143|3151":{"sku_id":"6080","spec_ids":"3143|3151"},"3132|3152":{"sku_id":"6081","spec_ids":"3132|3152"},"3140|3151":{"sku_id":"6082","spec_ids":"3140|3151"},"3141|3151":{"sku_id":"6083","spec_ids":"3141|3151"},"3146|3151":{"sku_id":"6084","spec_ids":"3146|3151"},"3133|3154":{"sku_id":"6085","spec_ids":"3133|3154"},"3130|3152":{"sku_id":"6086","spec_ids":"3130|3152"},"3133|3151":{"sku_id":"6087","spec_ids":"3133|3151"},"3134|3152":{"sku_id":"6088","spec_ids":"3134|3152"},"3136|3152":{"sku_id":"6089","spec_ids":"3136|3152"},"3128|3152":{"sku_id":"6090","spec_ids":"3128|3152"},"3126|3152":{"sku_id":"6091","spec_ids":"3126|3152"},"3144|3152":{"sku_id":"6092","spec_ids":"3144|3152"},"3134|3156":{"sku_id":"6093","spec_ids":"3134|3156"},"3148|3152":{"sku_id":"6094","spec_ids":"3148|3152"},"3147|3152":{"sku_id":"6095","spec_ids":"3147|3152"},"3131|3152":{"sku_id":"6096","spec_ids":"3131|3152"},"3149|3156":{"sku_id":"6097","spec_ids":"3149|3156"},"3137|3154":{"sku_id":"6098","spec_ids":"3137|3154"},"3129|3155":{"sku_id":"6099","spec_ids":"3129|3155"},"3137|3151":{"sku_id":"6100","spec_ids":"3137|3151"},"3135|3154":{"sku_id":"6101","spec_ids":"3135|3154"},"3142|3155":{"sku_id":"6102","spec_ids":"3142|3155"},"3148|3154":{"sku_id":"6103","spec_ids":"3148|3154"},"3149|3153":{"sku_id":"6104","spec_ids":"3149|3153"},"3134|3154":{"sku_id":"6105","spec_ids":"3134|3154"},"3148|3151":{"sku_id":"6106","spec_ids":"3148|3151"},"3130|3154":{"sku_id":"6107","spec_ids":"3130|3154"},"3135|3151":{"sku_id":"6108","spec_ids":"3135|3151"},"3132|3154":{"sku_id":"6109","spec_ids":"3132|3154"},"3127|3153":{"sku_id":"6110","spec_ids":"3127|3153"},"3145|3152":{"sku_id":"6111","spec_ids":"3145|3152"},"3133|3152":{"sku_id":"6112","spec_ids":"3133|3152"},"3127|3152":{"sku_id":"6113","spec_ids":"3127|3152"},"3132|3151":{"sku_id":"6114","spec_ids":"3132|3151"},"3130|3151":{"sku_id":"6115","spec_ids":"3130|3151"},"3130|3153":{"sku_id":"6116","spec_ids":"3130|3153"},"3149|3150":{"sku_id":"6117","spec_ids":"3149|3150"},"3132|3153":{"sku_id":"6118","spec_ids":"3132|3153"},"3142|3154":{"sku_id":"6119","spec_ids":"3142|3154"},"3147|3154":{"sku_id":"6120","spec_ids":"3147|3154"},"3131|3154":{"sku_id":"6121","spec_ids":"3131|3154"},"3129|3154":{"sku_id":"6122","spec_ids":"3129|3154"},"3139|3150":{"sku_id":"6123","spec_ids":"3139|3150"},"3127|3155":{"sku_id":"6124","spec_ids":"3127|3155"},"3139|3153":{"sku_id":"6125","spec_ids":"3139|3153"},"3127|3150":{"sku_id":"6126","spec_ids":"3127|3150"},"3146|3155":{"sku_id":"6127","spec_ids":"3146|3155"},"3140|3155":{"sku_id":"6128","spec_ids":"3140|3155"},"3138|3155":{"sku_id":"6129","spec_ids":"3138|3155"},"3134|3151":{"sku_id":"6130","spec_ids":"3134|3151"},"3141|3155":{"sku_id":"6131","spec_ids":"3141|3155"},"3149|3152":{"sku_id":"6132","spec_ids":"3149|3152"},"3143|3155":{"sku_id":"6133","spec_ids":"3143|3155"},"3136|3154":{"sku_id":"6134","spec_ids":"3136|3154"},"3144|3154":{"sku_id":"6135","spec_ids":"3144|3154"},"3126|3154":{"sku_id":"6136","spec_ids":"3126|3154"},"3131|3150":{"sku_id":"6137","spec_ids":"3131|3150"},"3127|3156":{"sku_id":"6138","spec_ids":"3127|3156"},"3145|3154":{"sku_id":"6139","spec_ids":"3145|3154"},"3147|3150":{"sku_id":"6140","spec_ids":"3147|3150"},"3129|3156":{"sku_id":"6141","spec_ids":"3129|3156"},"3128|3154":{"sku_id":"6142","spec_ids":"3128|3154"},"3133|3155":{"sku_id":"6143","spec_ids":"3133|3155"},"3142|3152":{"sku_id":"6144","spec_ids":"3142|3152"},"3139|3155":{"sku_id":"6145","spec_ids":"3139|3155"},"3142|3156":{"sku_id":"6146","spec_ids":"3142|3156"},"3129|3152":{"sku_id":"6147","spec_ids":"3129|3152"},"3143|3154":{"sku_id":"6148","spec_ids":"3143|3154"},"3134|3155":{"sku_id":"6149","spec_ids":"3134|3155"},"3145|3150":{"sku_id":"6150","spec_ids":"3145|3150"},"3148|3153":{"sku_id":"6151","spec_ids":"3148|3153"},"3126|3150":{"sku_id":"6152","spec_ids":"3126|3150"},"3138|3154":{"sku_id":"6153","spec_ids":"3138|3154"},"3138|3151":{"sku_id":"6154","spec_ids":"3138|3151"},"3144|3150":{"sku_id":"6155","spec_ids":"3144|3150"},"3133|3156":{"sku_id":"6156","spec_ids":"3133|3156"},"3136|3150":{"sku_id":"6157","spec_ids":"3136|3150"},"3128|3150":{"sku_id":"6158","spec_ids":"3128|3150"},"3135|3153":{"sku_id":"6159","spec_ids":"3135|3153"},"3146|3154":{"sku_id":"6160","spec_ids":"3146|3154"},"3137|3153":{"sku_id":"6161","spec_ids":"3137|3153"},"3141|3154":{"sku_id":"6162","spec_ids":"3141|3154"},"3140|3154":{"sku_id":"6163","spec_ids":"3140|3154"}}
+		</script>
+		<!-- 获取当前地址 -->
+		<script type="text/javascript">
+			var sku_ids = [];
+			var local_region_code = "51,01";
+			var sku_freights = [];
+
+			function getSkuId() {
+				var spec_ids = [];
+
+				$(".choose").find(".attr").each(function() {
+					var spec_id = $(this).find(".selected").data("spec-id");
+					spec_ids.push(spec_id);
+				});
+
+				var sku_id = $.cart.getSkuId(spec_ids, sku_ids);
+
+				if(sku_id == null) {
+					return false;
+				}
+
+				return sku_id;
+			}
+
+			function changeLocation(region_code) {
+				if(region_code == undefined || region_code == null || region_code.length == 0) {
+					return;
+				}
+
+				var sku_id = getSkuId();
+
+				return $.get("js/data/goods-change-location.json", {
+					"sku_id": sku_id,
+					"region_code": region_code
+				}, function(result) {
+					if(result.code == 0) {
+						local_region_code = region_code;
+						sku_freights[region_code] = result.data;
+						$(".freight-info").html(result.data.freight_info);
+						if($(document).data("SZY-SKU-" + sku_id)) {
+							var sku = $(document).data("SZY-SKU-" + sku_id);
+							setSkuInfo(sku);
+						} else {
+							// 库存
+							if(result.data.goods_number > 0) {
+								$(".SZY-GOODS-NUMBER").html("库存" + result.data.goods_number + "件");
+							} else {
+								$(".SZY-GOODS-NUMBER").html("库存不足");
+							}
+							// 购买
+							if(result.data.goods_number == 0) {
+								$(".add-cart").addClass("disabled");
+								$(".buy-goods").addClass("disabled");
+							} else {
+								$(".buy-goods").removeClass("disabled");
+								$(".add-cart").removeClass("disabled");
+							}
+						}
+					}
+				}, "json");
+			}
+
+			function getSkuInfo(sku_id, is_default, callback) {
+				if($(document).data("SZY-SKU-" + sku_id)) {
+					var sku = $(document).data("SZY-SKU-" + sku_id);
+					sku.is_default = is_default;
+					// 回调
+					if($.isFunction(callback)) {
+						callback.call({}, sku);
+					}
+				} else {
+
+					$.get('/goods/sku', {
+						sku_id: sku_id
+					}, function(result) {
+						if(result.code == 0) {
+							var sku = result.data;
+							sku.is_default = is_default;
+							$(document).data("SZY-SKU-" + sku_id, sku);
+							// 回调
+							if($.isFunction(callback)) {
+								callback.call({}, sku);
+							}
+						} else {
+							$.msg(result.message, {
+								time: 5000
+							});
+						}
+					}, "json");
+				}
+			}
+
+			// 设置SKU信息
+			function setSkuInfo(sku) {
+
+				if(sku == undefined || sku == null || sku == false) {
+					$(".add-cart").addClass("disabled");
+					$(".buy-goods").addClass("disabled");
+					$(".SZY-GOODS-NUMBER").html("库存不足");
+					return;
+				}
+
+				var goods_number = sku.goods_number;
+
+				if(goods_number > 0) {
+					if(sku_freights[local_region_code]) {
+						if(sku_freights[local_region_code].limit_sale == 1) {
+							goods_number = sku_freights[local_region_code].goods_number;
+						}
+					} else {
+						changeLocation(local_region_code).always(function(result) {
+							if(result.code == 0 && result.data.limit_sale == 1) {
+								setSkuInfo(sku);
+							}
+						});
+						return;
+					}
+				}
+
+				// 点击默认规格才会切换相册
+				if(sku.is_default == 1) {
+					// 相册
+					$(".goodsgallery").goodsgallery({
+						images: sku.sku_images
+					});
+				}
+				// 商品名称
+				$(".SZY-GOODS-NAME").html(sku.sku_name);
+				// 售价
+				$(".SZY-GOODS-PRICE").html(sku.goods_price_format);
+				// 市场价
+				$(".SZY-MARKET-PRICE").html(sku.market_price_format);
+
+				if(parseFloat(sku.market_price) == 0) {
+					$(".SZY-MARKET-PRICE").parents(".show-price").hide();
+				} else {
+					$(".SZY-MARKET-PRICE").parents(".show-price").show();
+				}
+
+				// 会员价格
+				if($(".SZY-RANK-PRICES").size() > 0 && sku.rank_prices != undefined && sku.rank_prices != null) {
+					$(".SZY-RANK-PRICES").nextAll().remove();
+					var html = "";
+					for(var i = 0; i < sku.rank_prices.length; i++) {
+						var item = sku.rank_prices[i];
+						html += "</br><span>" + item.rank_name + ":" + item.rank_price_format + "</span>";
+					}
+					$(".SZY-RANK-PRICES").after(html);
+				}
+
+				// 库存
+				if(goods_number > 0) {
+					$(".SZY-GOODS-NUMBER").html("库存" + goods_number + "件");
+				} else {
+					$(".SZY-GOODS-NUMBER").html("库存不足");
+				}
+
+				if(goods_number == 0) {
+					$(".add-cart").addClass("disabled");
+					$(".buy-goods").addClass("disabled");
+				} else {
+					$(".buy-goods").removeClass("disabled");
+					$(".add-cart").removeClass("disabled");
+				}
+
+				$(".amount-input").data("amount-min", 1);
+				$(".amount-input").data("amount-max", goods_number);
+
+				if(goods_number > 0 && $(".amount-input").val() == 0) {
+					$(".amount-input").val(1);
+				} else if(goods_number == 0 && $(".amount-input").val() != 0) {
+					$(".amount-input").val(0);
+				}
+
+				var goods_number_input = parseInt($(".amount-input").val());
+
+				if(goods_number_input > goods_number) {
+					$(".amount-input").val(goods_number);
+				}
+
+				// 处理赠品
+				if(sku.gift_list && sku.gift_list.length > 0) {
+
+					$(".SZY-GIFT-LIST").show();
+					$(".SZY-GIFT-LABEL").nextAll().remove();
+
+					for(var i = 0; i < sku.gift_list.length; i++) {
+						var gift = sku.gift_list[i];
+						var template = $("#SZY_GIFT_TEMPLATE").html();
+						var element = $($.parseHTML(template));
+						$(element).find("img").attr("src", gift.goods_image_thumb);
+						$(element).find("a").attr("href", "/" + gift.gift_sku_id + ".html");
+						$(element).find("a").attr("title", "/" + gift.sku_name);
+						$(element).find(".gift-number").html("×" + gift.gift_number);
+						$(".SZY-GIFT-LABEL").after(element);
+					}
+				} else {
+					$(".SZY-GIFT-LIST").hide();
+					$(".SZY-GIFT-LABEL").nextAll().remove();
+				}
+			}
+
+			$().ready(function() {
+				sku_ids = $.parseJSON($("#SZY_SKU_LIST").html());
+
+				if("51,01" == '') {
+					local_region_code = 0;
+				} else {
+					local_region_code = '51,01';
+				}
+
+				if(local_region_code && local_region_code.length > 0) {
+					changeLocation(local_region_code);
+				}
+
+				//变更配送地址
+				var region_chooser = $(".region-chooser-container").regionchooser({
+					value: local_region_code,
+					change: function(value, names, is_last) {
+						if(!is_last) {
+							return;
+						}
+						// 记录当前地址选择
+						local_region_code = value;
+						changeLocation(value);
+					}
+				});
+
+				// 步进器
+				var goods_number_amount = $(".amount-input").amount({
+					value: 1,
+					min: 1,
+					max: "491",
+					change: function(value) {
+						if(value == this.max) {
+
+						}
+					}
+				});
+
+				$(".goods-spec-item").click(function() {
+
+					if($(this).hasClass("invalid")) {
+						return;
+					}
+
+					$(this).siblings(".selected").removeClass("selected").find("i").remove();
+					$(this).addClass("selected").append("<i></i>");
+
+					// 是否为默认规格
+					var is_default = $(this).data("is-default");
+
+					var sku_id = getSkuId();
+
+
+
+
+				});
+
+				// 立即购买
+				$(".buy-goods").click(function() {
+
+						if($(this).hasClass("disabled")) {
+							return;
+						}
+						var sku_id = getSkuId();
+						var number = $(".amount-input").val();
+						$.cart.quickBuy(sku_id, number);
+					})
+					//在线客服
+					/* 	$(".service-online").click(function() {
+							var goods_id = 429;
+							$.openim({
+								goods_id:goods_id
+							});
+						}) */
+
+				// 添加购物车
+				$(".add-cart").click(function(event) {
+
+					if($(this).hasClass("disabled")) {
+						return;
+					}
+
+					var image_url = $(".goodsgallery").find(".gg-handler li:first img").attr("src");
+					var sku_id = getSkuId();
+					$.cart.add(sku_id, $(".amount-input").val(), {
+						is_sku: true,
+						image_url: image_url,
+						event: event
+					})
+				});
+
+				// 添加对比
+				$(".add-compare").click(function(event) {
+					var target = $(this);
+					var goods_id = $(this).data("goods-id");
+					var sku_id = $(this).add("sku-id");
+					var image_url = $(this).data("image-url");
+					$.compare.toggle(goods_id, image_url, event, function(result) {
+						if(result.data == 1) {
+							$(target).addClass("curr");
+						} else {
+							$(target).removeClass("curr");
+						}
+					});
+				});
+
+				// 添加收藏
+				$(".collect-goods").click(function(event) {
+					var target = $(this);
+					var goods_id = $(this).data("goods-id");
+					var sku_id = getSkuId();
+					$.collect.toggleGoods(goods_id, sku_id, function(result) {
+						if(result.code != 0) {
+							return;
+						}
+						if(result.data == 1) {
+							$(target).addClass("curr");
+							$(target).find("span").html("取消收藏(" + result.collect_count + "人气)");
+						} else {
+							$(target).removeClass("curr");
+							$(target).find("span").html("收藏商品(" + result.collect_count + "人气)");
+						}
+					}, true);
+				});
+				// 添加收藏
+				$(".collect-shop").click(function(event) {
+					var target = $(this);
+					var shop_id = "6";
+					$.collect.toggleShop(shop_id, function(result) {
+						if(result.data == 1) {
+							$(target).find("span").html("取消收藏");
+						} else {
+							$(target).find("span").html("收藏本店");
+						}
+					});
+				});
+
+				// 领取红包
+				$("body").on("click", ".bonus-receive", function() {
+					var bonus_id = $(this).data("bonus-id");
+					var target = $(this);
+					$.bonus.receive(bonus_id, function(result) {
+						if(result.code == 0) {
+							if(result.data == 0) {
+								$(target).html("已领取").removeClass("color").removeClass("bonus-receive").addClass("bonus-received");
+							}
+							$.msg(result.message);
+							return;
+						} else if(result.code == 130) {
+							$(target).html("已领取").removeClass("color").removeClass("bonus-receive").addClass("bonus-received");
+						} else if(result.code == 131) {
+							$(target).html("已抢光").removeClass("color").removeClass("bonus-receive").addClass("bonus-received");
+						} else {
+
+						}
+						$.msg(result.message, {
+							time: 5000
+						});
+					});
+				});
+			});
+		</script>
+		<script type="text/javascript">
+			//固定滚动条位置
+			$.fixedScorll.read("SZY_GOODS_SCORLL");
+
+			$().ready(function() {
+
+				var desc_container = $(".goods-detail-content");
+				var evaluate_container = $("#goods_evaluate");
+
+				function load() {
+
+					// 加载商品详情
+					if(!$("body").data("loading-goods-desc")) {
+						// 计算高度
+						if($(document).scrollTop() >= $(desc_container).offset().top - $(window).height()) {
+							$("body").data("loading-goods-desc", true);
+							$.get("js/data/goods-desc.json", {
+								sku_id: "6163"
+							}, function(result) {
+								$(desc_container).html(result.pc_desc);
+							}, "json");
+						}
+					}
+					// 评论
+					if(!$("body").data("loading-goods-comment")) {
+						// 计算高度
+						if($(document).scrollTop() >= $(evaluate_container).offset().top - $(window).height()) {
+							$("body").data("loading-goods-comment", true);
+							$.get('js/data/goods-comment.json', {
+								sku_id: "6163",
+								output: 1
+							}, function(result) {
+								if(result.code == 0) {
+									$(evaluate_container).html(result.data);
+								}
+							}, "json");
+						}
+					}
+				}
+
+				load();
+
+				// 加载商品详情和评论
+				$(window).scroll(function() {
+					load();
+				});
+
+			});
+		</script>
+		<!-- 结束：主要区域内容-->
+
+		<!-- 站点底部-->
+
+		<!-- 右侧边栏 _start -->
+		<div class="right-sidebar-con">
+			<div class="right-sidebar-main">
+				<div class="right-sidebar-panel">
+					<div id="quick-links" class="quick-links">
+						<ul>
+							<li class="quick-area quick-login sidebar-user-trigger">
+								<!-- 用户 -->
+								<a href="javascript:void(0);" class="quick-links-a">
+									<i class="setting"></i>
+								</a>
+								<div class="sidebar-user quick-sidebar">
+									<i class="arrow-right"></i>
+									<div class="sidebar-user-info">
+										<!-- 没有登录的情况 _start -->
+										<div class="SZY-USER-NOT-LOGIN" style="">
+											<div class="user-pic">
+												<div class="user-pic-mask"></div>
+												<img src="../img/test/default_user_portrait_0.png">
+											</div>
+											<br>
+											<p>
+												你好！请
+												<a href="javascript:void(0);" class="quick-login-a color ajax-login">登录</a>
+												|
+												<a href="register.html" class="color">注册</a>
+											</p>
+										</div>
+										<!-- 没有登录的情况 _end -->
+										<!-- 有登录的情况 _start -->
+										<div class="SZY-USER-ALREADY-LOGIN" style="display: none;">
+											<div class="user-have-login">
+												<div class="user-pic">
+													<div class="user-pic-mask"></div>
+													<img src="" class="SZY-USER-PIC">
+												</div>
+												<div class="user-info">
+													<p>
+														用&nbsp;&nbsp;&nbsp;户：
+														<span class="SZY-USER-NAME"></span>
+													</p>
+
+												</div>
+											</div>
+											<p class="m-t-10">
+												<span class="prev-login">
+					上次登录时间：
+					<span class="SZY-USER-LAST-LOGIN"></span>
+												</span>
+												<a href="user.html" class="btn account-btn" target="_blank">个人中心</a>
+												<a href="user/order.html" class="btn order-btn" target="_blank">订单中心</a>
+											</p>
+										</div>
+										<!-- 有登录的情况 _end -->
+									</div>
+								</div>
+							</li>
+							<li class="sidebar-tabs">
+								<!-- 购物车 -->
+								<div class="cart-list quick-links-a sidebar-cartbox-trigger">
+									<i class="cart"></i>
+									<div class="span">购物车</div>
+									<span class="ECS_CARTINFO">
+								<span class="cart_num SZY-CART-COUNT">0</span>
+									<div class="sidebar-cart-box">
+										<h3 class="sidebar-panel-header">
+										<a href="javascript:void(0);" class="title">
+											<i class="cart-icon"></i>
+											<em class="title">购物车</em>
+										</a>
+										<span class="close-panel"></span>
+									</h3>
+									</div>
+									</span>
+								</div>
+							</li>
+							<li class="sidebar-tabs">
+								<a href="javascript:void(0);" class="mpbtn_history quick-links-a sidebar-historybox-trigger">
+									<i class="history"></i>
+								</a>
+								<div class="popup">
+									<font id="mpbtn_histroy">我看过的</font>
+									<i class="arrow-right"></i>
+								</div>
+							</li>
+							<!-- 如果当前页面有对比功能 则显示对比按钮 _start-->
+							<li class="sidebar-tabs">
+								<a href="javascript:void(0);" class="mpbtn-contrast quick-links-a sidebar-comparebox-trigger">
+									<i class="contrast"></i>
+								</a>
+								<div class="popup">
+									对比商品
+									<i class="arrow-right"></i>
+								</div>
+							</li>
+							<!-- 如果当前页面有对比功能 则显示对比按钮 _end-->
+							<li>
+								<a href="user/collect/shop.html" target="_blank" class="mpbtn_stores quick-links-a">
+									<i class="stores"></i>
+								</a>
+								<div class="popup">
+									我收藏的店铺
+									<i class="arrow-right"></i>
+								</div>
+							</li>
+							<li id="collectGoods">
+								<a href="user/collect/goods.html" target="_blank" class="mpbtn_collect quick-links-a">
+									<i class="collect"></i>
+								</a>
+								<div class="popup">
+									我的收藏
+									<i class="arrow-right"></i>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="quick-toggle">
+						<ul>
+
+							<li class="quick-area">
+								<a class="quick-links-a" href="javascript:void(0);">
+									<i class="customer-service"></i>
+								</a>
+								<div class="sidebar-service quick-sidebar">
+									<i class="arrow-right"></i>
+
+									<div class="customer-service">
+										<a target="_blank" href="#">
+											<span class="icon-qq"></span> QQ
+										</a>
+									</div>
+
+									<div class="customer-service">
+										<a target="_blank" href="#">
+											<span class="icon-ww"></span> 旺旺
+										</a>
+									</div>
+
+								</div>
+							</li>
+
+							<li class="quick-area">
+								<a class="quick-links-a" href="javascript:void(0);">
+									<i class="qr-code"></i>
+								</a>
+								<div class="sidebar-code quick-sidebar">
+									<i class="arrow-right"></i>
+									<img src="../img/test/mall_wx_qrcode_0.jpg">
+								</div>
+							</li>
+							<li class="returnTop" style="display: none;">
+								<a href="javascript:void(0);" class="return_top quick-links-a">
+									<i class="top"></i>
+								</a>
+								<div class="popup">
+									返回顶部
+									<i class="arrow-right"></i>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="">
+					<!--红包 start-->
+					<!--红包 end-->
+					<!--购物车 start-->
+
+					<div class="right-sidebar-panels sidebar-cartbox">
+						<div class="sidebar-cart-box">
+							<h3 class="sidebar-panel-header">
+			<a href="javascript:void(0);" class="title" target="_blank">
+				<i class="cart-icon"></i>
+				<em class="title">购物车</em>
+			</a>
+			<span class="close-panel"></span>
+		</h3>
+							<div class="sidebar-cartbox-goods-list">
+
+								<div class="cart-panel-main">
+									<div class="cart-panel-content">
+
+										<!-- 没有商品的展示形式 _start -->
+										<div class="tip-box">
+											<i class="tip-icon"></i>
+											<div class="tip-text">
+												您的购物车里什么都没有哦
+												<br>
+												<a class="color" href="" title="再去看看吧" target="_blank">再去看看吧</a>
+											</div>
+										</div>
+										<!-- 没有商品的展示形式 _end-->
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!--购物车 end-->
+					<!--浏览历史 start-->
+					<!---->
+					<div class="right-sidebar-panels sidebar-historybox">
+						<h3 class="sidebar-panel-header">
+		<a href="javascript:;" class="title">
+			<i></i>
+			<em class="title">我的足迹</em>
+		</a>
+		<span class="close-panel"></span>
+	</h3>
+						<div class="sidebar-panel-main">
+							<div class="sidebar-panel-content sidebar-historybox-goods-list">
+								<!---->
+								<!---->
+								<!-- 没有浏览历史的展示形式 _start -->
+								<div class="tip-box">
+									<i class="tip-icon"></i>
+									<div class="tip-text">
+										您还没有在商城留下任何足迹哦
+										<br>
+										<a class="color" href="">赶快去看看吧</a>
+									</div>
+								</div>
+								<!-- 没有浏览历史的展示形式 _end-->
+								<!---->
+								<!---->
+							</div>
+						</div>
+					</div>
+					<!---->
+					<!--浏览历史 end-->
+					<!--对比列表 start-->
+
+					<!--对比列表 start-->
+					<div class="right-sidebar-panels sidebar-comparebox">
+						<h3 class="sidebar-panel-header">
+		<a href="javascript:void(0);" class="title">
+			<i class="compare-icon"></i>
+			<em class="title">宝贝对比</em>
+		</a>
+		<span class="close-panel"></span>
+	</h3>
+						<div>
+							<div class="sidebar-panel-main sidebar-comparebox-goods-list">
+
+								<div class="sidebar-panel-content compare-panel-content">
+
+									<!-- 没有对比商品的展示形式 _start -->
+									<div class="tip-box">
+										<i class="tip-icon"></i>
+										<div class="tip-text">
+											您的对比宝贝什么都没有哦
+											<br>
+											<a class="color" href="">再去看看吧</a>
+										</div>
+									</div>
+									<!-- 没有对比商品的展示形式 _end-->
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<!--对比列表 end-->
+
+					<!--对比列表 end-->
+				</div>
+			</div>
+		</div>
+		<!-- 右侧边栏 _end -->
+
+		<!-- 底部 _start-->
+
+		<div class="site-footer">
+
+			<div class="footer-service">
+				<div align="center"><img src="../img/test/14778844965714.jpg" alt="" height="85" width="1210"></div>
+			</div>
+
+			<div class="footer-related">
+
+				<div class="footer-article w1210">
+					<dl class="col-article col-article-spe">
+						<dt class="phone color">028-86261949</dt>
+						<dd class="email color">master@itsrouce.cn</dd>
+
+						<dd class="customer">
+							<span>联系我们</span>
+
+							<a href="#" target="_blank">
+								<em class="icon-ww"></em>
+							</a>
+
+							<a href="#" target="_blank">
+								<em class="icon-qq"></em>
+							</a>
+
+						</dd>
+
+					</dl>
+					<!---->
+					<dl class="col-article col-article-first">
+						<dt>新手上路</dt>
+
+						<dd>
+
+							<a rel="nofollow" href="#" target="_blank">购物流程</a>
+
+						</dd>
+
+						<dd>
+
+							<a rel="nofollow" href="#" target="_blank">订单查询</a>
+
+						</dd>
+
+						<dd>
+
+							<a rel="nofollow" href="#" target="_blank">常见问题</a>
+
+						</dd>
+
+						<dd>
+
+							<a rel="nofollow" href="#" target="_blank">在线客服</a>
+
+						</dd>
+						<!-- -->
+					</dl>
+					<!---->
+					<dl class="col-article col-article-first">
+						<dt>支付方式</dt>
+
+						<dd>
+
+							<a rel="nofollow" href="#" target="_blank">网上支付</a>
+
+						</dd>
+						<!-- -->
+					</dl>
+					<!---->
+					<dl class="col-article col-article-first">
+						<dt>配送服务</dt>
+
+						<dd>
+
+							<a rel="nofollow" href="#" target="_blank">配送范围及收费标准</a>
+
+						</dd>
+
+						<dd>
+
+							<a rel="nofollow" href="#" target="_blank">订单进度查询</a>
+
+						</dd>
+
+						<dd>
+
+							<a rel="nofollow" href="#" target="_blank">验货与签收</a>
+
+						</dd>
+						<!-- -->
+					</dl>
+					<!---->
+					<dl class="col-article col-article-first">
+						<dt>售后服务</dt>
+
+						<dd>
+
+							<a rel="nofollow" href="#" target="_blank">退换货政策</a>
+
+						</dd>
+
+						<dd>
+
+							<a rel="nofollow" href="#" target="_blank">退换货流程</a>
+
+						</dd>
+
+						<dd>
+
+							<a rel="nofollow" href="#" target="_blank">退款说明</a>
+
+						</dd>
+						<!-- -->
+					</dl>
+					<!---->
+					<dl class="col-article col-article-first">
+						<dt>商家合作</dt>
+
+						<dd>
+
+							<a rel="nofollow" href="#" target="_blank">商家入驻</a>
+
+						</dd>
+						<!-- -->
+					</dl>
+					<!---->
+
+					<div class="QR-code fr">
+
+						<ul class="tabs">
+
+						</ul>
+						<div class="code-content">
+
+							<div class="code ">
+								<img src="../img/test/mall_wx_qrcode_0.jpg">
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+
+			<div class="footer-desc-copyright">
+
+				<p class="footer-ecscinfo">
+					<a href="#">首页</a>
+					|
+
+					<a href="#">隐私保护</a>
+					|
+
+					<a href="#">联系我们</a>
+					|
+
+					<a href="#">免责条款</a>
+					|
+
+					<a href="#">公司简介</a>
+					|
+
+					<a href="#">意见反馈</a>
+
+					|
+					<a rel="nofollow" target="_blank" href="#">会员登录</a>
+					|
+					<a rel="nofollow" target="_blank" href="http://bbs.itsource.cn/">会员论坛</a>
+					|
+					<a href="javascript:;" rel="nofollow">客服热线028-86261949</a>
+				</p>
+				<p class="footer-otherlink">
+					<a title="源码商城" target="_blank" href="http://itsource.cn">源码商城</a>
+
+					|
+
+					<a title="菁鱼课堂" target="_blank" href="http://www.itsource.cn">菁鱼课堂</a>
+
+					|
+
+					<a title="资讯速递" target="_blank" href="http://www.itsource.cn">资讯速递</a>
+
+					|
+
+					<a title="快递查询" target="_blank" href="http://m.kuaidi100.com">快递查询</a>
+
+					|
+
+					<a title="论坛" target="_blank" href="http://bbs.itsource.com/forum.php">会员论坛</a>
+
+					|
+
+					<a title="源代码教育咨询有限公司" target="_blank" href="http://www.itsource.cn">源代码教育咨询有限公司</a>
+
+				</p>
+
+				<p class="footer-beian"> ICP备案证书号:
+					<a rel="nofollow" target="_blank" href="#">蜀ICP备88888888号-1</a>
+					<a rel="nofollow" target="_blank" href="#"><i></i>蜀公网安备 45323525326664号</a>
+				</p>
+				<p class="footer-Copyright">Copyright &copy; 2017
+					<a target="_blank" style="margin:0;padding:0;" href="http://www.saodangzu.com/">itsource.cn</a> All Rights Reserved. </p>
+				<p>&nbsp;</p>
+
+				<p class="footer-fp-img">
+					<a target="_blank" href="#"><img src="../img/test/kxwz.png"></a>
+					<a target="_blank" href="#"><img src="../img/test/smyz.png"></a>
+					<a target="_blank" href="#"><img src="../img/test/cxyz.jpg"></a>
+					<a target="_blank" href="#"><img src="../img/test/hyyz.png"></a>
+					<a target="_blank" href="#"><img src="../img/test/jpfw.png"></a>
+				</p>
+			</div>
+
+		</div>
+
+		<!-- 第三方流量统计 -->
+		<div style="display: none;"></div>
+		<!-- 底部 _end-->
+		</div>
+
+		<script type="text/javascript">
+
+			let app = new Vue({
+				el:"#app",
+				data:{
+					price:0,
+					store:0,
+					skuSelected:[],//这个数组的索引表示的是第几个sku属性，对应索引上的值表示的是选中的是该属性的第几个选项
+					skus:[{"id":30,"isSku":1,"options":["少女","妇女"],"productTypeId":3,"specName":"年龄"},{"id":31,"isSku":1,"options":["36D","48F"],"productTypeId":3,"specName":"肤色"}]
+				},
+				methods:{
+					changeSku(index1,index2){
+						//index1 表示的是选中的第几个sku属性
+						//index2 表示的是选中的sku属性的第几个选项
+						this.skuSelected[index1-1] = index2-1;
+						this.loadPrice();
+					},
+					loadPrice(){
+						//发送请求获取价格和库存
+						let param = {};
+						let productId = 60;
+						let indexs = this.skuSelected.join("_");// [0,0]   0_0
+						axios.get("http://localhost:8991/services/product/sku/skuChange?productId="+productId+"&indexs="+indexs)
+								.then(res=>{
+									this.price = res.data.price;
+									this.store = res.data.store;
+								})
+					}
+				},
+				mounted(){
+
+					//初始化选中的sku选项
+					for(let i=0;i<this.skus.length;i++){
+						this.skuSelected[i] = 0;
+					}
+					this.loadPrice();
+				}
+			})
+
+		</script>
+
+
+		<script type="text/javascript" src="../js/jquery.fly.min.js"></script>
+		<script type="text/javascript" src="../js/szy.cart.js"></script>
+		<!--[if lte IE 9]>
+<script type="text/javascript" src="/js/requestAnimationFrame.js"></script>
+<![endif]-->
+		<script type="text/javascript">
+			$().ready(function() {
+				$.cartbox.count = "0";
+				// 缓载图片
+				$("img").lazyload({
+					skip_invisible: false,
+					effect: 'fadeIn',
+					failure_limit: 20,
+					threshold: 200
+				});
+
+			});
+		</script>
+
+	</body>
+
+</html>
